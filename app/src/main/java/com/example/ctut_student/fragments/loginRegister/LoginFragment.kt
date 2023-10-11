@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.ctut_student.R
 import com.example.ctut_student.activities.DashboardActivity
 import com.example.ctut_student.databinding.FragmentLoginBinding
+import com.example.ctut_student.dialog.setupBottomSheetDialog
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -49,11 +50,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
-//        binding.tvForgotPasswordLogin.setOnClickListener {
-//            setupBottomSheetDialog { email ->
-//                viewModel.resetPassword(email)
-//            }
-//        }
+        binding.tvForgotPasswordLogin.setOnClickListener {
+            setupBottomSheetDialog { email ->
+                viewModel.resetPassword(email)
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.resetPassword.collect {
