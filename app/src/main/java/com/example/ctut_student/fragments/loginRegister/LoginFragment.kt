@@ -1,7 +1,4 @@
 package com.example.ctut_student.fragments.loginRegister
-//import com.example.ctut_student.activities.ShoppingActivity
-//import com.example.ctut_student.databinding.ResetPassowrdDialogBinding
-//import com.example.ctut_student.dialog.setupBottomSheetDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater

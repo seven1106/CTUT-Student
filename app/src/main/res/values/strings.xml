@@ -9,4 +9,10 @@
     <string name="password">Password</string>
     <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
     <string name="email">Email</string>
+    <string name="home">Home</string>
+    <string name="notification">Notification</string>
+    <string name="elearning">Elearning</string>
+    <string name="profile">Profile</string>
+    <string name="hello">Hello</string>
+    <string name="attendance">Attendance</string>
 </resources>

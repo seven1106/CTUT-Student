@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ctut_student.fragments.dashboard.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.ctut_student.fragments.dashboard.NotificationFragment"
+        android:label="NotificationFragment"
+        tools:layout="@layout/fragment_notification"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_elearning"/>
+    <fragment
+        android:id="@+id/elearningFragment"
+        android:name="com.example.ctut_student.fragments.dashboard.ElearningFragment"
+        android:label="ElearningFragment"
+        tools:layout="@layout/fragment_profile"/>
+</navigation>
