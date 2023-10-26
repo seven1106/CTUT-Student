@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-        private val db:FirebaseFirestore
+    private val db:FirebaseFirestore
 
 ) : ViewModel() {
     private val _register = MutableStateFlow<Resource<User>>(Resource.Unspecified())

@@ -14,6 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/tvLetsLogin"
             style="@style/h4"
@@ -25,105 +26,78 @@
             android:textColor="@color/g_blue"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvDontHaveAccount"
+            style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/h2"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintTop_toBottomOf="@id/tvLetsLogin"
-            android:textAlignment="center"
             android:gravity="center"
             android:text="@string/don_t_have_an_account_register"
-            />
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
+            app:layout_constraintTop_toBottomOf="@id/tvLetsLogin" />
 
         <EditText
             android:id="@+id/edEmailLogin"
+            style="@style/editText"
             android:layout_width="0dp"
             android:layout_height="@dimen/edittextHeight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
-            app:layout_constraintTop_toBottomOf="@id/tvDontHaveAccount"
-            style="@style/editText"
+            android:layout_marginTop="50dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:layout_marginTop="50dp"/>
+            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
+            app:layout_constraintTop_toBottomOf="@id/tvDontHaveAccount" />
 
         <EditText
             android:id="@+id/edPasswordLogin"
+            style="@style/editText"
             android:layout_width="0dp"
             android:layout_height="@dimen/edittextHeight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
-            app:layout_constraintTop_toBottomOf="@id/edEmailLogin"
-            style="@style/editText"
+            android:layout_marginTop="15dp"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:layout_marginTop="15dp"/>
+            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
+            app:layout_constraintTop_toBottomOf="@id/edEmailLogin" />
 
         <TextView
             android:id="@+id/tvForgotPasswordLogin"
+            style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/h2"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintTop_toBottomOf="@id/edPasswordLogin"
-            android:textAlignment="center"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/forgot_password"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            />
-
-        <ImageView
-            android:id="@+id/facebookLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintTop_toBottomOf="@id/buttonLoginLogin"
-            android:src="@drawable/facebook_login"/>
+            app:layout_constraintTop_toBottomOf="@id/buttonLoginLogin" />
 
-        <TextView
+        <CheckBox
+            android:id="@+id/cbRememberMeLogin"
+            style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Facebook"
-            app:layout_constraintStart_toStartOf="@id/facebookLogin"
-            app:layout_constraintTop_toTopOf="@id/facebookLogin"
-            app:layout_constraintBottom_toBottomOf="@id/facebookLogin"
-            app:layout_constraintEnd_toEndOf="@id/facebookLogin"/>
-
-        <ImageView
-            android:id="@+id/googleLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
-            app:layout_constraintTop_toBottomOf="@id/buttonLoginLogin"
-            android:src="@drawable/google_login"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Google"
-            app:layout_constraintStart_toStartOf="@id/googleLogin"
-            app:layout_constraintTop_toTopOf="@id/googleLogin"
-            app:layout_constraintBottom_toBottomOf="@id/googleLogin"
-            app:layout_constraintEnd_toEndOf="@id/googleLogin"/>
-
+            android:buttonTint="@color/g_blue"
+            android:text="@string/remember_me"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
+            app:layout_constraintTop_toBottomOf="@id/edPasswordLogin" />
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonLoginLogin"
+            style="@style/blueButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/mediumButtonHeight"
-            style="@style/blueButtonStyle"
-            app:layout_constraintTop_toBottomOf="@id/tvForgotPasswordLogin"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
-            android:layout_marginTop="15dp"
             android:text="@string/login"
-            app:spinning_bar_color="@color/white"/>
+            app:layout_constraintEnd_toEndOf="@id/guidelineRightLogin"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeftLogin"
+            app:layout_constraintTop_toBottomOf="@id/cbRememberMeLogin"
+            app:spinning_bar_color="@color/white" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineLeftLogin"
             android:layout_width="wrap_content"

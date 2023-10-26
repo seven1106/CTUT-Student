@@ -1,4 +1,5 @@
 package com.example.ctut_student.fragments.loginRegister
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,22 +12,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ctut_student.R
 import com.example.ctut_student.activities.DashboardActivity
+import com.example.ctut_student.activities.ManageActivity
 import com.example.ctut_student.databinding.FragmentLoginBinding
 import com.example.ctut_student.dialog.setupBottomSheetDialog
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var binding: FragmentLoginBinding
     private val viewModel by viewModels<LoginViewModel>()
-
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater)
         return binding.root
@@ -34,6 +37,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         binding.tvDontHaveAccount.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
@@ -61,9 +66,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     is Resource.Success -> {
                         Snackbar.make(
-                            requireView(),
-                            "Reset link was sent to your email",
-                            Snackbar.LENGTH_LONG
+                            requireView(), "Reset link was sent to your email", Snackbar.LENGTH_LONG
                         ).show()
                     }
 
@@ -86,11 +89,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
 
                     is Resource.Success -> {
+                        checkUserRole(it.data!!.uid)
                         binding.buttonLoginLogin.revertAnimation()
-                        Intent(requireActivity(), DashboardActivity::class.java).also { intent ->
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
+
                     }
 
                     is Resource.Error -> {
@@ -104,4 +105,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
     }
+
+    private fun checkUserRole(uid: String) {
+        firestore.collection("user").document(uid).get()
+            .addOnSuccessListener { documentSnapshot ->
+                val role = documentSnapshot.getString("role")
+                if (role == "student") {
+                    Intent(requireActivity(), DashboardActivity::class.java).also { intent ->
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                } else if (role == "admin") {
+                    Intent(requireActivity(), ManageActivity::class.java).also { intent ->
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+
+                    }
+                }
+            }
+    }
+
 }
