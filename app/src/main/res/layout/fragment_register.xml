@@ -86,6 +86,17 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:layout_marginTop="10dp"/>
+<!--        <CheckBox-->
+<!--            android:id="@id/cbAdminRegister"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/edPasswordRegister"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="Admin"-->
+<!--            android:layout_marginBottom="10dp"/>-->
+
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonRegisterRegister"
@@ -98,44 +109,6 @@
             android:layout_marginTop="15dp"
             android:text="Register"
             app:spinning_bar_color="@color/white"/>
-
-        <ImageView
-            android:id="@+id/facebookRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
-            app:layout_constraintTop_toBottomOf="@id/buttonRegisterRegister"
-            android:src="@drawable/facebook_login"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Facebook"
-            app:layout_constraintStart_toStartOf="@id/facebookRegister"
-            app:layout_constraintTop_toTopOf="@id/facebookRegister"
-            app:layout_constraintBottom_toBottomOf="@id/facebookRegister"
-            app:layout_constraintEnd_toEndOf="@id/facebookRegister"/>
-
-
-        <ImageView
-            android:id="@+id/googleRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"
-            app:layout_constraintTop_toBottomOf="@id/buttonRegisterRegister"
-            android:src="@drawable/google_login"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Google"
-            app:layout_constraintStart_toStartOf="@id/googleRegister"
-            app:layout_constraintTop_toTopOf="@id/googleRegister"
-            app:layout_constraintBottom_toBottomOf="@id/googleRegister"
-            app:layout_constraintEnd_toEndOf="@id/googleRegister"/>
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineRegisterLeft"
             android:layout_width="wrap_content"

@@ -5,7 +5,7 @@
     <string name="login">Login</string>
     <string name="letLogin">Let\'s login</string>
     <string name="register">Register</string>
-    <string name="forgot_password">Forgot password</string>
+    <string name="forgot_password">Forgot password ?</string>
     <string name="password">Password</string>
     <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
     <string name="email">Email</string>
@@ -15,4 +15,9 @@
     <string name="profile">Profile</string>
     <string name="hello">Hello</string>
     <string name="attendance">Attendance</string>
+    <string name="remember_me">Remember me</string>
+    <string name="userManage">User Manage</string>
+    <string name="classManage">Class manage</string>
+    <string name="courseManage">Course Manage</string>
+    <string name="notiManage">Notification Manage</string>
 </resources>

@@ -11,4 +11,5 @@
     <item name="circle" type="id" />
     <item name="textureTopLeft" type="id" />
     <item name="btnLogin" type="id" />
+    <item name="cbAdminRegister" type="id" />
 </resources>

@@ -43,7 +43,8 @@
                     android:layout_width="108dp"
                     android:layout_height="116dp"
                     android:layout_marginEnd="32dp"
-                    android:src="@drawable/logo"
+                    android:background="@drawable/circle"
+                    android:src="@drawable/ic_profile"
                     app:layout_constraintBottom_toBottomOf="@+id/top_bg_gradient"
                     app:layout_constraintEnd_toEndOf="@id/top_bg_gradient"
                     app:layout_constraintTop_toTopOf="@id/top_bg_gradient" />
@@ -107,7 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:text="Your Schedule"
+                            android:text="My Schedule"
                             android:textAlignment="center"
                             android:textColor="#7182ef"
                             android:textStyle="bold" />
@@ -137,7 +138,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:text="Your Scoreboard"
+                            android:text="My Scoreboard"
                             android:textAlignment="center"
                             android:textColor="#7182ef"
                             android:textStyle="bold" />
@@ -214,8 +215,8 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
                             android:background="@drawable/btn_schedule">
 
                             <ImageView
@@ -257,8 +258,8 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
                             android:background="@drawable/btn_schedule">
 
                             <ImageView
@@ -307,8 +308,8 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
                             android:background="@drawable/btn_schedule">
 
                             <ImageView
@@ -333,7 +334,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="News"
+                            android:text="Course Register"
                             android:textAlignment="center"
                             android:textColor="#2e3d6d"
                             android:textSize="14sp"
@@ -352,7 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:background="@drawable/white_bg_radius">
+                            android:background="@drawable/btn_schedule">
 
                             <ImageView
                                 android:id="@+id/ivReport"
@@ -393,8 +394,8 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center"
                             android:background="@drawable/btn_schedule">
 
                             <ImageView

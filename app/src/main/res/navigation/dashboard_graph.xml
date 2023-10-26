@@ -16,13 +16,13 @@
         android:label="NotificationFragment"
         tools:layout="@layout/fragment_notification"/>
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_elearning"/>
-    <fragment
         android:id="@+id/elearningFragment"
         android:name="com.example.ctut_student.fragments.dashboard.ElearningFragment"
         android:label="ElearningFragment"
+        tools:layout="@layout/fragment_elearning"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ProfileFragment"
+        android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 </navigation>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/userManageFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/userManage" />
+    <item
+        android:id="@+id/classManageFragment"
+        android:icon="@drawable/ic_classroom"
+        android:title="@string/classManage" />
+    <item
+        android:id="@+id/courseManageFragment"
+        android:icon="@drawable/ic_elearning"
+        android:title="@string/courseManage" />
+    <item
+        android:id="@+id/notiManageFragment"
+        android:icon="@drawable/ic_noti"
+        android:title="@string/notiManage" />
+
+
+</menu>
