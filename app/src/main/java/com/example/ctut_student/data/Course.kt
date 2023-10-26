@@ -14,6 +14,7 @@ class Course(
     val practice_periods: Int,
     val course_image: String,
     val list_student: List<String>,
+    val scores: Scores
 
     ) {
 }
