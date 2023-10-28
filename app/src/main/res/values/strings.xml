@@ -20,4 +20,8 @@
     <string name="classManage">Class manage</string>
     <string name="courseManage">Course Manage</string>
     <string name="notiManage">Notification Manage</string>
+    <string name="user_management">User Management</string>
+    <string name="hiAdmin">Hi Admin</string>
+    <string name="search">Search…</string>
+    <string name="all_user">All user</string>
 </resources>
