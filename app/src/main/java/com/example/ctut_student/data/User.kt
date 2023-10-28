@@ -6,6 +6,7 @@ data class User(
     val firstName: String,
     val lastName: String,
     val email: String,
+    val id: Int,
     val class_id: String="",
     val role: String,
     var imagePath: String = "",
@@ -13,6 +14,9 @@ data class User(
     val gender: String = "",
     val phoneNumber: String = "",
     val dayOfBirth: Date? = null,
-    val specialty : String = "",
-    val course : List<String>? = null,
-)
+    val specialty: String = "",
+//    val course: List<String>? = null,
+
+) {
+    constructor() : this("", "", "", 0, "", "", "", "", "", "", null, "")
+}
