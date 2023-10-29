@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.CTUTStudent" parent="Base.Theme.CTUTStudent" />
+    <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+    </style>
 </resources>

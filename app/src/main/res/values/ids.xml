@@ -12,4 +12,5 @@
     <item name="textureTopLeft" type="id" />
     <item name="btnLogin" type="id" />
     <item name="cbAdminRegister" type="id" />
+    <item name="btnAdd" type="id" />
 </resources>
