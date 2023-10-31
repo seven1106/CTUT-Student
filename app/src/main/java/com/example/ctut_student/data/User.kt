@@ -15,7 +15,7 @@ data class User(
     val phoneNumber: String = "",
     val dayOfBirth: Date? = null,
     val specialty: String = "",
-//    val course: List<String>? = null,
+//    val course: List<Course>? = null,
 
 ) {
     constructor() : this("", "", "", 0, "", "", "", "", "", "", null, "")
