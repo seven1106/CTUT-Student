@@ -53,7 +53,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     edLastNameRegister.text.toString().trim(),
                     edEmailRegister.text.toString().trim(),
                     role = "student",
-                    id = 0
 
                 )
                 val password = edPasswordRegister.text.toString()
@@ -75,6 +74,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
                     is Resource.Error -> {
                         binding.buttonRegisterRegister.revertAnimation()
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         Log.e(TAG, it.message.toString())
 
                     }

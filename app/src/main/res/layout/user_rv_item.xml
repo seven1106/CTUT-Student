@@ -7,7 +7,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="88dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:layout_margin="7dp"
         android:background="@drawable/user_item_bg"
         app:cardElevation="7dp"
@@ -15,80 +16,57 @@
 
         <ImageView
             android:id="@+id/ivUserAvt"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
+            android:background="@drawable/user"
+            android:padding="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvUserName"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_light"
             android:text="Scotch Premium"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/ivUserAvt"
             app:layout_constraintTop_toTopOf="@id/ivUserAvt" />
 
         <TextView
-            android:id="@+id/tvId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/sf_pro_display"
-            android:text="ID:"
-            android:textColor="@color/g_gray700"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@id/ivUserAvt"
-            app:layout_constraintTop_toBottomOf="@id/tvUserClassroom" />
-
-        <TextView
             android:id="@+id/tvUserId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/sf_pro_display"
-            android:text="2001074"
+            android:text="KHMT"
             android:textColor="@color/g_gray700"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@id/tvId"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@id/ivUserAvt"
             app:layout_constraintTop_toBottomOf="@id/tvUserClassroom" />
+
+
 
         <TextView
             android:id="@+id/tvUserClassroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/sf_pro_display"
-            android:text="CLNAME"
-            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
 
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/tvUserName"
+            android:fontFamily="@font/sf_pro_display"
+            android:text="CLNAME@gmail.com"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/ivUserAvt"
             app:layout_constraintTop_toBottomOf="@id/tvUserName" />
 
-        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-            android:id="@+id/btn_see_product"
-            android:layout_width="83dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/blue_background"
-            android:fontFamily="@font/poppins_light"
-            android:text="See more"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvUserName"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

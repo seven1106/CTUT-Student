@@ -11,6 +11,7 @@ import com.example.ctut_student.util.validatePassword
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -22,13 +23,14 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val db:FirebaseFirestore
+    private val db:FirebaseFirestore,
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val _register = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val register: Flow<Resource<User>> = _register
     private val _validation = Channel<RegisterFieldsState> ()
     val validetion = _validation.receiveAsFlow()
+
     fun createAccountWithEmailAndPassword(user: User, password: String) {
         if (checkValidation(user, password)) {
 

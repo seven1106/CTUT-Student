@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 fun Fragment.setupBottomSheetDialog(
     onSendClick: (String) -> Unit
 ) {
-    val dialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+    val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
     val view = layoutInflater.inflate(R.layout.reset_passowrd_dialog, null)
     dialog.setContentView(view)
     dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
