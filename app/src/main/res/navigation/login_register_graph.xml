@@ -3,28 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_register_graph"
-    app:startDestination="@id/introductionFragment">
+    app:startDestination="@id/loginFragment">
 
-    <fragment
-        android:id="@+id/introductionFragment"
-        android:name="com.example.ctut_student.fragments.loginRegister.IntroductionFragment"
-        android:label="IntroductionFragment"
-        tools:layout="@layout/fragment_introduction">
-        <action
-            android:id="@+id/action_introductionFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_introductionFragment_to_registerFragment"
-            app:destination="@id/registerFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.ctut_student.fragments.loginRegister.LoginFragment"

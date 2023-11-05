@@ -25,11 +25,11 @@ class IntroductionFragment:Fragment(R.layout.fragment_introduction) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_introductionFragment_to_loginFragment)
+//            findNavController().navigate(R.id.action_introductionFragment_to_loginFragment)
         }
 
         binding.btnRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_introductionFragment_to_registerFragment)
+//            findNavController().navigate(R.id.action_introductionFragment_to_registerFragment)
         }
     }
 }
