@@ -64,6 +64,32 @@ class UserManageViewModel @Inject constructor(
     private val pagingInfo = PagingInfo()
     init {
         fetchAllUsers()
+        getUser()
+    }
+    private fun getUser() {
+        viewModelScope.launch {
+            _user.emit(Resource.Loading())
+        }
+        firestore.collection("user").document(auth.uid!!)
+
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    viewModelScope.launch {
+                        _user.emit(Resource.Error(error.message.toString()))
+                    }
+                } else {
+                    val user = value?.toObject(User::class.java)
+                    user?.let {
+                        viewModelScope.launch {
+                            _user.emit(Resource.Success(user))
+                        }
+                    }
+                }
+            }
+    }
+
+    fun logout(){
+        auth.signOut()
     }
     fun fetchAllUsers() {
         if (!pagingInfo.isPagingEnd) {
@@ -210,7 +236,7 @@ class UserManageViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val imageBitmap = MediaStore.Images.Media.getBitmap(
-                    ManageActivity().contentResolver,
+                    getApplication<CTUTApplication>().contentResolver,
                     imageUri
                 )
                 val byteArrayOutputStream = ByteArrayOutputStream()
@@ -231,7 +257,7 @@ class UserManageViewModel @Inject constructor(
 
     private fun saveUserInformation(user: User, shouldRetrievedOldImage: Boolean) {
         firestore.runTransaction { transaction ->
-            val documentRef = firestore.collection("user").document(auth.uid!!)
+            val documentRef = firestore.collection("user").document(user.email)
             if (shouldRetrievedOldImage) {
                 val currentUser = transaction.get(documentRef).toObject(User::class.java)
                 val newUser = user.copy(imagePath = currentUser?.imagePath ?: "")

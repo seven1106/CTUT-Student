@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="25dp"
+    android:background="@drawable/top_radius_white"
     android:fillViewport="true"
-    android:background="@drawable/top_radius_white">
+    android:paddingBottom="25dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,12 +16,11 @@
             android:id="@+id/progressbarAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imageUser"
@@ -36,9 +34,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageStudent"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/ivUser"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="6dp"
 
                 android:layout_marginTop="6dp"
@@ -52,7 +50,16 @@
                 app:srcCompat="@drawable/ic_profile" />
 
 
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageEdit"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/user_item_bg"
+                android:backgroundTint="#5E85F9"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="@id/imageUser"
+                app:layout_constraintEnd_toEndOf="@id/imageUser" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -99,25 +106,11 @@
             android:hint="@string/email"
             android:singleLine="true"
             android:textColor="@color/g_gray700"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edFirstName" />
 
-        <EditText
-            android:id="@+id/edPassword"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword"
-            android:background="@drawable/white_background"
-            android:fontFamily="@font/poppins_light"
-            android:gravity="center"
-            android:hint="@string/password"
-            android:singleLine="true"
-            android:textColor="@color/g_gray700"
-            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edEmail" />
         <EditText
             android:id="@+id/edAddress"
             android:layout_width="0dp"
@@ -129,9 +122,11 @@
             android:hint="@string/address"
             android:singleLine="true"
             android:textColor="@color/g_gray700"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/edEmail" />
+
         <EditText
             android:id="@+id/edPhone"
             android:layout_width="0dp"
@@ -143,9 +138,11 @@
             android:hint="@string/phone_number"
             android:singleLine="true"
             android:textColor="@color/g_gray700"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edDoB" />
+
         <EditText
             android:id="@+id/edSpecialty"
             android:layout_width="0dp"
@@ -157,6 +154,7 @@
             android:hint="@string/specialty"
             android:singleLine="true"
             android:textColor="@color/g_gray700"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edAddress" />
@@ -172,6 +170,7 @@
             android:hint="@string/day_of_birth"
             android:singleLine="true"
             android:textColor="@color/g_gray700"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edSpecialty" />
@@ -216,7 +215,7 @@
 
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-            android:id="@+id/btnSaveEditStudent"
+            android:id="@+id/btnEditStudent"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
