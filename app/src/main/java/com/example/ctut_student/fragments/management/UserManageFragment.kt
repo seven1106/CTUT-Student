@@ -48,7 +48,6 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
         super.onCreate(savedInstanceState)
         sf = requireActivity().getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
         editor = sf.edit()
-
         imageActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
@@ -62,6 +61,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                 }
             }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -145,13 +145,8 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             edAddress.text = Editable.Factory.getInstance().newEditable(user?.address)
             edDoB.text = Editable.Factory.getInstance().newEditable(user?.dayOfBirth.toString())
             edSpecialty.text = Editable.Factory.getInstance().newEditable(user?.specialty)
-            val imagePath = user?.imagePath
-            if (imagePath != null) {
-                val resourceId =
-                    resources.getIdentifier(imagePath, "drawable", requireContext().packageName)
-                if (resourceId != 0) {
-                    ivUser.setImageResource(resourceId)
-                }
+            if (user?.imagePath !== "") {
+                Glide.with(this@UserManageFragment).load(user?.imagePath).into(ivUser)
             }
             when (user?.gender) {
                 "male" -> genderRadioGroup.check(R.id.maleRadioButton)
@@ -160,61 +155,60 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                     genderRadioGroup.clearCheck()
                 }
             }
-            var gender: String = ""
-            val selectedGenderId = binding.genderRadioGroup.checkedRadioButtonId
-            gender = if (selectedGenderId == R.id.maleRadioButton) {
-                "male"
-            } else {
-                "female"
-            }
 
-            imageEdit.setOnClickListener {
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "image/*"
-                imageActivityResultLauncher.launch(intent)
+
+//            imageEdit.setOnClickListener {
+//                val intent = Intent(Intent.ACTION_GET_CONTENT)
+//                intent.type = "image/*"
+//                imageActivityResultLauncher.launch(intent)
+//            }
+            lifecycleScope.launchWhenStarted {
+                viewModel.updateInfo.collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            Log.e("TAGGGG", it.data.toString())
+                            binding.btnEditStudent.startAnimation()
+                        }
+
+                        is Resource.Success -> {
+                            Log.e("TAGGGG", it.data.toString())
+
+                            binding.btnEditStudent.revertAnimation()
+                            viewModel.fetchAllUsers()
+
+                        }
+
+                        is Resource.Error -> {
+                            binding.btnEditStudent.revertAnimation()
+                            Log.e("TAGGGG", it.message.toString())
+
+                        }
+
+                        else -> Unit
+                    }
+                }
             }
             btnEditStudent.setOnClickListener {
+                var gender: String = ""
+                val selectedGenderId = genderRadioGroup.checkedRadioButtonId
+                gender = if (selectedGenderId == R.id.maleRadioButton) {
+                    "male"
+                } else {
+                    "female"
+                }
                 val userEdit = User(
                     edFirstName.text.toString().trim(),
                     edLastName.text.toString().trim(),
                     email = edEmail.text.toString().trim(),
                     role = "student",
                     gender = gender,
-                    address =  edAddress.text.toString().trim(),
+                    address = edAddress.text.toString().trim(),
                     phoneNumber = edPhone.text.toString().trim(),
                     dayOfBirth = edDoB.text.toString().trim(),
                     specialty = edSpecialty.text.toString().trim()
                 )
-//                viewModel.updateUser(userEdit, imageUri)
-                viewModel.fetchAllUsers()
-                lifecycleScope.launchWhenStarted {
-                    viewModel.updateInfo.collectLatest {
-                        when (it) {
-                            is Resource.Loading -> {
-                                binding.btnEditStudent.startAnimation()
-                            }
+                viewModel.updateUser(userEdit, imageUri)
 
-                            is Resource.Success -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Student account updated",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                                binding.btnEditStudent.revertAnimation()
-
-                            }
-
-                            is Resource.Error -> {
-                                binding.btnEditStudent.revertAnimation()
-                                Log.e("TAGGGG", it.message.toString())
-
-                            }
-
-                            else -> Unit
-                        }
-                    }
-                }
             }
         }
         dialog.show()

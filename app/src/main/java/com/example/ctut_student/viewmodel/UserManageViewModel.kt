@@ -97,8 +97,7 @@ class UserManageViewModel @Inject constructor(
                 _users.emit(Resource.Loading())
             }
             firestore.collection("user")
-                .orderBy("firstName", com.google.firebase.firestore.Query.Direction.ASCENDING)
-                .limit(10)
+                .orderBy("firstName", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener {
                     val users = it.toObjects(User::class.java)
@@ -139,18 +138,31 @@ class UserManageViewModel @Inject constructor(
 
     }
     fun createAccountWithEmailAndPassword(user: User, password: String, ) {
+        val areInputsValid = validateEmail(user.email) is RegisterValidation.Success
+                && user.firstName.trim().isNotEmpty()
+                && user.lastName.trim().isNotEmpty()
+                && user.dayOfBirth.trim().isNotEmpty()
+                && user.specialty.trim().isNotEmpty()
 
+        if (!areInputsValid) {
+            viewModelScope.launch {
+                _user.emit(Resource.Error("Check your inputs"))
+                Toast.makeText(getApplication(), "Check your inputs", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
             runBlocking {
                 _register.emit(Resource.Loading())
             }
             auth.createUserWithEmailAndPassword(user.email, password)
                 .addOnSuccessListener {
                     it.user?.let {
-                        saveUserInfo(it.uid, user)
+                        saveUserInfo(it.email!!, user)
                     }
                 }.addOnFailureListener {
 
                     _register.value = Resource.Error(it.message.toString())
+                    Toast.makeText(getApplication(), it.message.toString(), Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -161,6 +173,7 @@ class UserManageViewModel @Inject constructor(
             .set(user)
             .addOnSuccessListener {
                 _register.value = Resource.Success(user)
+                fetchAllUsers()
             }.addOnFailureListener {
                 _register.value = Resource.Error(it.message.toString())
             }
@@ -184,10 +197,10 @@ class UserManageViewModel @Inject constructor(
     }
     fun updateUser(user: User, imageUri: Uri?) {
         val areInputsValid = validateEmail(user.email) is RegisterValidation.Success
-//                && user.firstName.trim().isNotEmpty()
-//                && user.lastName.trim().isNotEmpty()
-//                && user.dayOfBirth.trim().isNotEmpty()
-//                && user.specialty.trim().isNotEmpty()
+                && user.firstName.trim().isNotEmpty()
+                && user.lastName.trim().isNotEmpty()
+                && user.dayOfBirth.trim().isNotEmpty()
+                && user.specialty.trim().isNotEmpty()
 
         if (!areInputsValid) {
             viewModelScope.launch {
@@ -207,31 +220,6 @@ class UserManageViewModel @Inject constructor(
         }
 
     }
-    fun getImagesByteArray(imageUri: Uri): String? {
-        var img: String? = ""
-        viewModelScope.launch {
-            try {
-                val inputStream = ByteArrayOutputStream()
-                val imgBitmap = MediaStore.Images.Media.getBitmap(
-                    ManageActivity().contentResolver,
-                    imageUri
-                )
-                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, inputStream)
-                    val imageByteArray = inputStream.toByteArray()
-                    val imageDirectory =
-                        storage.child("profileImages/${auth.uid}/${UUID.randomUUID()}")
-                    val result = imageDirectory.putBytes(imageByteArray).await()
-                    val imageUrl = result.storage.downloadUrl.await().toString()
-                    img = imageUrl
-
-            } catch (e: Exception) {
-                viewModelScope.launch {
-                    _user.emit(Resource.Error(e.message.toString()))
-                }
-            }
-        }
-        return img
-    }
     private fun saveUserInformationWithNewImage(user: User, imageUri: Uri) {
         viewModelScope.launch {
             try {
@@ -243,13 +231,15 @@ class UserManageViewModel @Inject constructor(
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 96, byteArrayOutputStream)
                 val imageByteArray = byteArrayOutputStream.toByteArray()
                 val imageDirectory =
-                    storage.child("profileImages/${auth.uid}/${UUID.randomUUID()}")
+                    storage.child("profileImages/${user.email}/${UUID.randomUUID()}")
                 val result = imageDirectory.putBytes(imageByteArray).await()
                 val imageUrl = result.storage.downloadUrl.await().toString()
                 saveUserInformation(user.copy(imagePath = imageUrl), false)
             } catch (e: Exception) {
                 viewModelScope.launch {
                     _user.emit(Resource.Error(e.message.toString()))
+                    Toast.makeText(getApplication(), e.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -268,6 +258,12 @@ class UserManageViewModel @Inject constructor(
         }.addOnSuccessListener {
             viewModelScope.launch {
                 _updateInfo.emit(Resource.Success(user))
+                Toast.makeText(
+                    getApplication(),
+                    "Student account updated",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
             }
         }.addOnFailureListener {
             viewModelScope.launch {

@@ -63,11 +63,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="24dp"
                 android:background="@drawable/white_bg_radius"
                 android:orientation="vertical"
                 android:padding="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextText">
@@ -82,9 +80,9 @@
                         android:id="@+id/tvAlluser"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:text="@string/all_user"
                         android:textColor="#000000"
-                        android:layout_weight="1"
 
                         android:textSize="24sp" />
 
@@ -92,8 +90,8 @@
                         android:id="@+id/btnRefresh"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:src="@drawable/baseline_refresh"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/baseline_refresh" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -101,8 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:overScrollMode="never"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 

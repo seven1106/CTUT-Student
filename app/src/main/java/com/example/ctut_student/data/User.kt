@@ -2,6 +2,7 @@ package com.example.ctut_student.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 
 data class User(
     val firstName: String,
@@ -14,9 +15,11 @@ data class User(
     val phoneNumber: String = "",
     val dayOfBirth: String = "",
     val specialty: String = "",
+    @get:Exclude
+    val isSelected: Boolean = false
 
     ) : Parcelable {
-    constructor() : this("", "", "", "", "", "", "", "", "", ""
+    constructor() : this("", "", "", "", "", "", "", "", "", "",  false
     )
 
 
