@@ -75,10 +75,8 @@ class ManageActivity : AppCompatActivity() {
 
 
             btnSaveEditStudent.setOnClickListener() {
-                if (validateInput(binding)) {
-
                     var gender: String = ""
-                    val selectedGenderId = binding.genderRadioGroup.checkedRadioButtonId
+                    val selectedGenderId = genderRadioGroup.checkedRadioButtonId
                     gender = if (selectedGenderId == R.id.maleRadioButton) {
                         "male"
                     } else {
@@ -116,6 +114,7 @@ class ManageActivity : AppCompatActivity() {
                                     )
                                         .show()
                                     binding.btnSaveEditStudent.revertAnimation()
+                                    viewModel.fetchAllUsers()
 
                                 }
 
@@ -130,56 +129,11 @@ class ManageActivity : AppCompatActivity() {
                             }
                         }
                     }
-                }
             }
             dialog.show()
         }
     }
 
-    private fun validateInput(binding: AddStudentDialogBinding): Boolean {
-        with(binding) {
-            if (edFirstName.text.isEmpty()) {
-                edFirstName.error = "First name is required"
-                edFirstName.requestFocus()
-                return false
-            }
-            if (edLastName.text.isEmpty()) {
-                edLastName.error = "Last name is required"
-                edLastName.requestFocus()
-                return false
-            }
-            if (edEmail.text.isEmpty()) {
-                edEmail.error = "Email is required"
-                edEmail.requestFocus()
-                return false
-            }
-            if (edPassword.text.isEmpty()) {
-                edPassword.error = "Password is required"
-                edPassword.requestFocus()
-                return false
-            }
-            if (edAddress.text.isEmpty()) {
-                edAddress.error = "Address is required"
-                edAddress.requestFocus()
-                return false
-            }
-            if (edPhone.text.isEmpty()) {
-                edPhone.error = "Phone is required"
-                edPhone.requestFocus()
-                return false
-            }
-            if (edDoB.text.isEmpty()) {
-                edDoB.error = "Date of birth is required"
-                edDoB.requestFocus()
-                return false
-            }
-            if (edSpecialty.text.isEmpty()) {
-                edSpecialty.error = "Specialty is required"
-                edSpecialty.requestFocus()
-                return false
-            }
-        }
-        return true
-    }
+
 
 }
