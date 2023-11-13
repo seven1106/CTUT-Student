@@ -89,6 +89,33 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             val data = Bundle().apply { putParcelable("user", it) }
             editStudentBottomSheetDialog(data)
         }
+        userAdapter.onClickDelete = {
+            viewModel.deleteUser(it)
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.user.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), "Delete User Success", Toast.LENGTH_SHORT).show()
+                        viewModel.fetchAllUsers()
+
+                    }
+
+                    is Resource.Error -> {
+                        Log.e(TAG, it.message.toString())
+                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> {}
+                }
+            }
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.users.collectLatest {
                 when (it) {

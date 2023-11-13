@@ -34,4 +34,6 @@
     <string name="address">Address</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="classrom_management">Classrom Management</string>
+    <string name="all_class">All Classrom</string>
 </resources>

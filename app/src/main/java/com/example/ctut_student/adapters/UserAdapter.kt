@@ -3,6 +3,8 @@ package com.example.ctut_student.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.ctut_student.R
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.UserRvItemBinding
+import com.example.ctut_student.viewmodel.UserManageViewModel
 
-class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter() : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     inner class UserViewHolder(private val binding: UserRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -23,12 +26,14 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
                 tvUserId.text = user.specialty
             }
 
+
         }
     }
 
+
     private val diffCallback = object : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
+            return oldItem.email == newItem.email
 
         }
 
@@ -55,9 +60,13 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         holder.itemView.setOnClickListener {
             onClick?.invoke(user)
         }
+        holder.itemView.findViewById<ImageView>(R.id.ibDeleteUser).setOnClickListener {
+            onClickDelete?.invoke(user)
+        }
 
     }
 
     var onClick: ((User) -> Unit)? = null
+    var onClickDelete: ((User) -> Unit)? = null
 
 }

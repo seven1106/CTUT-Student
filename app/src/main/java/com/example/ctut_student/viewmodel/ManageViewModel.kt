@@ -183,7 +183,7 @@ class UserManageViewModel @Inject constructor(
             _user.emit(Resource.Loading())
         }
         firestore.collection(Constants.USER_COLLECTION)
-            .document(user.email)
+            .document(user.email.lowercase())
             .delete()
             .addOnSuccessListener {
                 viewModelScope.launch {

@@ -3,7 +3,9 @@ package com.example.ctut_student.data
 data class Classroom(
 val classId: String,
 val className: String,
-val instructor: String,
-val schedule: List<ClassroomSchedule>,
-val students: List<User>
+
+val adviser: String,
+val adviserEmail : String,
+val schedule: Map<String, String>,
+val students: Map<String, String>
 )

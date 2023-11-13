@@ -1,21 +1,16 @@
 package com.example.ctut_student.activities
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
 import com.example.ctut_student.R
+import com.example.ctut_student.data.Classroom
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.ActivityManageBinding
 import com.example.ctut_student.databinding.AddStudentDialogBinding
@@ -25,13 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-
-//import showAddStudentDialog
-
 @AndroidEntryPoint
 class ManageActivity : AppCompatActivity() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var btnAddStudent: LinearLayout
+    private lateinit var btnAddClassroom: LinearLayout
     private val viewModel by viewModels<UserManageViewModel>()
     private val binding by lazy {
         ActivityManageBinding.inflate(layoutInflater)
@@ -60,7 +53,24 @@ class ManageActivity : AppCompatActivity() {
         btnAddStudent.setOnClickListener {
             showAddStudentDialog()
         }
+        btnAddClassroom = dialogAddView.findViewById<LinearLayout>(R.id.btnAddClassroom)
+        btnAddClassroom.setOnClickListener {
+            showAddClassroomDialog()
+        }
+
         dialog.show()
+    }
+
+    private fun showAddClassroomDialog() {
+        val dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
+        val binding = AddStudentDialogBinding.inflate(layoutInflater)
+        val view = binding.root
+        dialog.setContentView(view)
+        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        binding.apply {
+
+        }
     }
 
     private fun showAddStudentDialog() {
@@ -111,8 +121,19 @@ class ManageActivity : AppCompatActivity() {
                                         applicationContext,
                                         "Student account created",
                                         Toast.LENGTH_SHORT
+
                                     )
                                         .show()
+                                    binding.apply {
+                                        edFirstName.text.clear()
+                                        edLastName.text.clear()
+                                        edEmail.text.clear()
+                                        edAddress.text.clear()
+                                        edPhone.text.clear()
+                                        edDoB.text.clear()
+                                        edSpecialty.text.clear()
+                                        edPassword.text.clear()
+                                    }
                                     binding.btnSaveEditStudent.revertAnimation()
                                     viewModel.fetchAllUsers()
 

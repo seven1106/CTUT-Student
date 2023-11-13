@@ -1,6 +1,8 @@
 package com.example.ctut_student.dependencies_injection
 
+import com.example.ctut_student.util.Constants.USER_COLLECTION
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -25,5 +27,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideStorage() = FirebaseStorage.getInstance().reference
+
+    @Provides
+    @Singleton
+    fun provideUserCollectionRef(rootRef:FirebaseFirestore) = rootRef.collection(USER_COLLECTION)
 
 }
