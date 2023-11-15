@@ -13,6 +13,7 @@ import com.example.ctut_student.R
 import com.example.ctut_student.data.Classroom
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.ActivityManageBinding
+import com.example.ctut_student.databinding.AddClassromDialogBinding
 import com.example.ctut_student.databinding.AddStudentDialogBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.UserManageViewModel
@@ -37,6 +38,7 @@ class ManageActivity : AppCompatActivity() {
         val navController = findNavController(R.id.ManageHostFragment)
         binding.bottomManageNav.setupWithNavController(navController)
         binding.btnAdd.setOnClickListener {
+            onPause()
             showBtnAddDialog()
         }
 
@@ -45,16 +47,24 @@ class ManageActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchAllUsers()
+    }
+
+
     private fun showBtnAddDialog() {
         val dialogAddView = layoutInflater.inflate(R.layout.btn_add_dialog, null)
         dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
         dialog.setContentView(dialogAddView)
         btnAddStudent = dialogAddView.findViewById<LinearLayout>(R.id.btnAddStudent)
         btnAddStudent.setOnClickListener {
+            dialog.dismiss()
             showAddStudentDialog()
         }
         btnAddClassroom = dialogAddView.findViewById<LinearLayout>(R.id.btnAddClassroom)
         btnAddClassroom.setOnClickListener {
+            dialog.dismiss()
             showAddClassroomDialog()
         }
 
@@ -63,18 +73,69 @@ class ManageActivity : AppCompatActivity() {
 
     private fun showAddClassroomDialog() {
         val dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
-        val binding = AddStudentDialogBinding.inflate(layoutInflater)
+        val binding = AddClassromDialogBinding.inflate(layoutInflater)
         val view = binding.root
         dialog.setContentView(view)
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         binding.apply {
 
+            btnCreateNewClassroom.setOnClickListener() {
+                val classroom = Classroom(
+                    edClassId.text.toString().trim(),
+                    edClassName.text.toString().trim(),
+                    edDescription.text.toString().trim(),
+                    edDepartment.text.toString().trim(),
+                    edAvdiser.text.toString().trim(),
+                    edAvdisorEmail.text.toString().trim(),
+                    edAcaYear.text.toString().trim()
+                )
+                viewModel.createNewClassroom(classroom.classId, classroom)
+                lifecycleScope.launchWhenStarted {
+                    viewModel.createClass.collectLatest {
+                        when (it) {
+                            is Resource.Loading -> {
+                                binding.btnCreateNewClassroom.startAnimation()
+                            }
+
+                            is Resource.Success -> {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Classroom created",
+                                    Toast.LENGTH_SHORT
+
+                                )
+                                    .show()
+                                binding.apply {
+                                    edClassId.text.clear()
+                                    edClassName.text.clear()
+                                    edDescription.text.clear()
+                                    edDepartment.text.clear()
+                                    edAvdiser.text.clear()
+                                    edAvdisorEmail.text.clear()
+                                    edAcaYear.text.clear()
+                                }
+                                binding.btnCreateNewClassroom.revertAnimation()
+
+                            }
+
+                            is Resource.Error -> {
+
+                                binding.btnCreateNewClassroom.revertAnimation()
+                                Log.e("TAGGGG", it.message.toString())
+                            }
+
+                            else -> Unit
+                        }
+                    }
+                }
+            }
+            dialog.show()
+
         }
     }
 
     private fun showAddStudentDialog() {
-
         val dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
         val binding = AddStudentDialogBinding.inflate(layoutInflater)
         val view = binding.root
@@ -104,12 +165,13 @@ class ManageActivity : AppCompatActivity() {
                         edDoB.text.toString().trim(),
                         edSpecialty.text.toString().trim()
                     )
-                    val password = edPassword.text.toString()
+                    val password = edPassword.text.toString().trim()
                     viewModel.createAccountWithEmailAndPassword(user, password)
-                    viewModel.fetchAllUsers()
+                onResume()
 
 
-                    lifecycleScope.launchWhenStarted {
+
+                lifecycleScope.launchWhenStarted {
                         viewModel.register.collectLatest {
                             when (it) {
                                 is Resource.Loading -> {
@@ -135,8 +197,7 @@ class ManageActivity : AppCompatActivity() {
                                         edPassword.text.clear()
                                     }
                                     binding.btnSaveEditStudent.revertAnimation()
-                                    viewModel.fetchAllUsers()
-
+                                    onResume()
                                 }
 
                                 is Resource.Error -> {

@@ -15,11 +15,12 @@ data class User(
     val phoneNumber: String = "",
     val dayOfBirth: String = "",
     val specialty: String = "",
+    val scores: Map<String, String> = emptyMap(),
     @get:Exclude
-    val isSelected: Boolean = false
-
+    val isSelected: Boolean = false,
+val classId: String = ""
     ) : Parcelable {
-    constructor() : this("", "", "", "", "", "", "", "", "", "",  false
+    constructor() : this("", "", "", "", "", "", "", "", "", "",  emptyMap(), false, ""
     )
 
 

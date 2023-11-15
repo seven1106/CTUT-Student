@@ -14,7 +14,7 @@ import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.UserRvItemBinding
 import com.example.ctut_student.viewmodel.UserManageViewModel
 
-class UserAdapter() : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     inner class UserViewHolder(private val binding: UserRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -25,8 +25,6 @@ class UserAdapter() : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
                 tvUserClassroom.text = user.email
                 tvUserId.text = user.specialty
             }
-
-
         }
     }
 

@@ -93,7 +93,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             viewModel.deleteUser(it)
         }
         lifecycleScope.launchWhenStarted {
-            viewModel.user.collect {
+            viewModel.delUser.collect {
                 when (it) {
                     is Resource.Loading -> {
                         binding.UserManageProgressbar.visibility = View.VISIBLE
@@ -101,7 +101,6 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
 
                     is Resource.Success -> {
                         binding.UserManageProgressbar.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Delete User Success", Toast.LENGTH_SHORT).show()
                         viewModel.fetchAllUsers()
 
                     }
@@ -126,6 +125,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                     is Resource.Success -> {
                         binding.UserManageProgressbar.visibility = View.GONE
                         userAdapter.differ.submitList(it.data)
+                        Log.i(TAG, it.data.toString())
                     }
 
                     is Resource.Error -> {
