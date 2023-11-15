@@ -14,7 +14,14 @@
         android:id="@+id/classManageFragment"
         android:name="com.example.ctut_student.fragments.management.ClassManageFragment"
         android:label="ClassManageFragment"
-        tools:layout="@layout/fragment_class_manage"/>
+        tools:layout="@layout/fragment_class_manage">
+        <action
+            android:id="@+id/action_classManageFragment_to_classDetailFragment"
+            app:destination="@id/classDetailFragment" />
+        <action
+            android:id="@+id/action_classManageFragment_to_addStudentToClass"
+            app:destination="@id/addStudentToClass" />
+    </fragment>
     <fragment
         android:id="@+id/courseManageFragment"
         android:name="com.example.ctut_student.fragments.management.CourseManageFragment"
@@ -25,4 +32,26 @@
         android:name="com.example.ctut_student.fragments.management.NotiManageFragment"
         android:label="NotiManageFragment"
         tools:layout="@layout/fragment_noti_manage"/>
+    <fragment
+        android:id="@+id/classDetailFragment"
+        android:name="com.example.ctut_student.fragments.management.ClassDetailFragment"
+        android:label="ClassDetailFragment"
+        tools:layout="@layout/fragment_classroom_detail">
+        <argument
+            android:name="classroom"
+            app:argType="com.example.ctut_student.data.Classroom" />
+        <action
+            android:id="@+id/action_classDetailFragment_to_addStudentToClass"
+            app:destination="@id/addStudentToClass" />
+    </fragment>
+    <fragment
+        android:id="@+id/addStudentToClass"
+        android:name="com.example.ctut_student.fragments.management.AddStudentToClass"
+        android:label="AddStudentToClass"
+        tools:layout="@layout/fragment_add_st_to_cl"
+        >
+        <argument
+            android:name="classroom"
+            app:argType="com.example.ctut_student.data.Classroom" />
+    </fragment>
 </navigation>

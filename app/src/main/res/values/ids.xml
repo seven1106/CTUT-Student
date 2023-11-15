@@ -13,4 +13,5 @@
     <item name="btnLogin" type="id" />
     <item name="cbAdminRegister" type="id" />
     <item name="btnAdd" type="id" />
+    <item name="tvAdvisor" type="id" />
 </resources>

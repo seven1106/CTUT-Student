@@ -36,4 +36,14 @@
     <string name="last_name">Last Name</string>
     <string name="classrom_management">Classrom Management</string>
     <string name="all_class">All Classrom</string>
+    <string name="classId">Id Class</string>
+    <string name="className">Class Name</string>
+    <string name="description">Description</string>
+    <string name="department">Department</string>
+    <string name="adviser">Adviser</string>
+    <string name="adviserEmail">Adviser Email</string>
+    <string name="addNewClassroom">Add New Classroom</string>
+    <string name="addNewUser">Add New User</string>
+    <string name="academicYear">Academic Year</string>
+    <string name="all_student">All Student</string>
 </resources>

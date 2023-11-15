@@ -16,27 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/ivLogout"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvUserManagement"
-                app:srcCompat="@drawable/ic_logout" />
-
-            <TextView
-                android:id="@+id/tvUserManagement"
-                style="@style/h3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/classrom_management"
-                android:textColor="@color/g_white"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextText"
@@ -54,7 +33,7 @@
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvUserManagement" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -81,8 +60,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="@string/all_class"
+                        android:text="@string/all_user"
                         android:textColor="#000000"
+
                         android:textSize="24sp" />
 
                     <ImageButton
@@ -94,7 +74,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvClassroom"
+                    android:id="@+id/rvUserNoClass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -104,7 +84,7 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/ClassManageProgressbar"
+                android:id="@+id/UserManageProgressbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminateTint="@color/g_gray700"

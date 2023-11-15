@@ -57,13 +57,14 @@
 
 
         <EditText
-            android:id="@+id/edEmail"
+            android:id="@+id/edClassId"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/email"
+            android:hint="@string/classId"
             android:singleLine="true"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
@@ -71,36 +72,35 @@
             app:layout_constraintTop_toBottomOf="@+id/imageUser" />
 
         <EditText
-            android:id="@+id/edPassword"
+            android:id="@+id/edClassName"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
-            android:inputType="textPassword"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/password"
+            android:hint="@string/className"
             android:singleLine="true"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/edClassId" />
         <EditText
-            android:id="@+id/edAddress"
+            android:id="@+id/edDescription"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/address"
+            android:hint="@string/description"
+            android:textStyle="bold"
             android:singleLine="true"
-            android:textColor="@color/g_gray700"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/edClassName" />
         <EditText
-            android:id="@+id/edPhone"
+            android:id="@+id/edAvdisorEmail"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
@@ -108,96 +108,71 @@
             android:textStyle="bold"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/phone_number"
+            android:hint="@string/adviserEmail"
             android:singleLine="true"
-            android:textColor="@color/g_gray700"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edDoB" />
+            app:layout_constraintTop_toBottomOf="@+id/edAvdiser" />
         <EditText
-            android:id="@+id/edSpecialty"
+            android:id="@+id/edAcaYear"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/academicYear"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edAvdisorEmail" />
+        <EditText
+            android:id="@+id/edDepartment"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/specialty"
+            android:hint="@string/department"
             android:singleLine="true"
 
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edAddress" />
+            app:layout_constraintTop_toBottomOf="@+id/edDescription" />
 
         <EditText
-            android:id="@+id/edDoB"
+            android:id="@+id/edAvdiser"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
-            android:hint="@string/day_of_birth"
+            android:hint="@string/adviser"
             android:singleLine="true"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edSpecialty" />
-
-        <TextView
-            android:id="@+id/tvGender"
-            style="@style/h2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/select_gender"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@id/edPhone" />
-
-
-        <RadioGroup
-            android:id="@+id/genderRadioGroup"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintStart_toEndOf="@+id/tvGender"
-            app:layout_constraintTop_toBottomOf="@+id/edPhone">
-
-            <RadioButton
-                android:id="@+id/maleRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/male" />
-
-            <RadioButton
-                android:id="@+id/femaleRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/female" />
-
-        </RadioGroup>
-
+            app:layout_constraintTop_toBottomOf="@+id/edDepartment" />
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-            android:id="@+id/btnSaveEditStudent"
+            android:id="@+id/btnCreateNewClassroom"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/blue_background"
             android:fontFamily="@font/poppins_light"
-            android:text="@string/save"
+            android:text="@string/addNewClassroom"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/genderRadioGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/edAcaYear" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftGuideline"
