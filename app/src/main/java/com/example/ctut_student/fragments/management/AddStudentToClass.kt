@@ -9,64 +9,71 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ctut_student.R
-import com.example.ctut_student.adapters.ClassroomAdapter
-import com.example.ctut_student.databinding.FragmentClassManageBinding
+import com.example.ctut_student.adapters.UserAdapter
+import com.example.ctut_student.databinding.FragmentAddStToClBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
-    private lateinit var binding: FragmentClassManageBinding
-    private lateinit var classroomAdapter: ClassroomAdapter
+class AddStudentToClass : Fragment(R.layout.fragment_add_st_to_cl) {
+
+    private lateinit var binding: FragmentAddStToClBinding
+    private lateinit var userAdapter: UserAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
+    private val args by navArgs<AddStudentToClassArgs>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentClassManageBinding.inflate(inflater)
+        binding = FragmentAddStToClBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpClassroomRv()
-        binding.btnRefresh.setOnClickListener {
-            viewModel.fetchAllClass()
+        setUpStudentNoClassRv()
+        val classroom = args.classroom
+        userAdapter.onClick = {
+            viewModel.updateStudentClassId(classroom.classId, it)
+            viewModel.fetchStudentNoClass()
         }
-        classroomAdapter.onClick = {
-            val b = Bundle().apply { putParcelable("classroom", it) }
-            findNavController().navigate(R.id.action_classManageFragment_to_classDetailFragment, b)
 
+        binding.apply {
+            btnRefresh.setOnClickListener() {
+                viewModel.fetchStudentNoClass()
+            }
         }
+
     }
 
-    private fun setUpClassroomRv() {
-        classroomAdapter = ClassroomAdapter()
-        binding.rvClassroom.apply {
-            adapter = classroomAdapter
+    private fun setUpStudentNoClassRv() {
+        userAdapter = UserAdapter()
+        binding.rvUserNoClass.apply {
+            adapter = userAdapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
         lifecycleScope.launchWhenStarted {
-            viewModel.classrooms.collectLatest {
+            viewModel.users.collectLatest {
                 when (it) {
                     is Resource.Loading -> {
-                        binding.ClassManageProgressbar.visibility = View.VISIBLE
+                        binding.UserManageProgressbar.visibility = View.VISIBLE
                     }
 
                     is Resource.Success -> {
-                        binding.ClassManageProgressbar.visibility = View.GONE
-                        classroomAdapter.differ.submitList(it.data)
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        userAdapter.differ.submitList(it.data)
                         Log.i("TAGclass", it.data.toString())
                     }
 
                     is Resource.Error -> {
-                        binding.ClassManageProgressbar.visibility = View.GONE
+                        binding.UserManageProgressbar.visibility = View.GONE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        Log.i("TAGclass", it.message.toString())
                     }
 
 

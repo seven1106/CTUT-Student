@@ -7,23 +7,19 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ctut_student.CTUTApplication
-import com.example.ctut_student.activities.ManageActivity
+import com.example.ctut_student.data.Classroom
 import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Constants
 import com.example.ctut_student.util.RegisterFieldsState
 import com.example.ctut_student.util.RegisterValidation
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.util.validateEmail
-import com.example.ctut_student.util.validatePassword
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -53,11 +49,19 @@ class UserManageViewModel @Inject constructor(
     private val _user = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val user = _user.asStateFlow()
 
+    private val _delUser = MutableStateFlow<Resource<User>>(Resource.Unspecified())
+    val delUser = _delUser.asStateFlow()
+
     private val _updateInfo = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val updateInfo = _updateInfo.asStateFlow()
 
     private val _register = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val register: Flow<Resource<User>> = _register
+
+    private val _createClass = MutableStateFlow<Resource<Classroom>>(Resource.Unspecified())
+    val createClass: Flow<Resource<Classroom>> = _createClass
+
+
     private val _validation = Channel<RegisterFieldsState> ()
     val validetion = _validation.receiveAsFlow()
 
@@ -92,36 +96,10 @@ class UserManageViewModel @Inject constructor(
         auth.signOut()
     }
     fun fetchAllUsers() {
-        if (!pagingInfo.isPagingEnd) {
-            viewModelScope.launch {
-                _users.emit(Resource.Loading())
-            }
-            firestore.collection("user")
-                .orderBy("firstName", com.google.firebase.firestore.Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener {
-                    val users = it.toObjects(User::class.java)
-                    Log.i("TAGfetch", it.toString())
-                    viewModelScope.launch {
-                        pagingInfo.userPage++
-                        pagingInfo.oldUser = users
-                        _users.emit(Resource.Success(users))
-                    }
-                }.addOnFailureListener {
-                    viewModelScope.launch {
-                        Log.i("TAGfetch", it.message.toString())
-                        _users.emit(Resource.Error(it.message.toString()))
-                    }
-                }
-        } else {
-            viewModelScope.launch {
-                _users.emit(Resource.Success(pagingInfo.oldUser))
-            }
-        }
         viewModelScope.launch {
             _users.emit(Resource.Loading())
         }
-        firestore.collection("user").get()
+        firestore.collection("user").orderBy("firstName", Query.Direction.ASCENDING).get()
             .addOnSuccessListener {
                 val users = it.toObjects(User::class.java)
                 Log.i("TAGfetch", it.toString())
@@ -178,6 +156,33 @@ class UserManageViewModel @Inject constructor(
                 _register.value = Resource.Error(it.message.toString())
             }
     }
+    fun createNewClassroom(classroomId: String, classroom: Classroom) {
+        val areInputsValid = validateEmail(classroom.adviserEmail) is RegisterValidation.Success
+                && classroom.className.trim().isNotEmpty()
+                && classroom.adviser.trim().isNotEmpty()
+                && classroom.adviserEmail.trim().isNotEmpty()
+                && classroom.academicYear.trim().isNotEmpty()
+                && classroom.department.trim().isNotEmpty()
+
+        if (!areInputsValid) {
+            viewModelScope.launch {
+                _user.emit(Resource.Error("Check your inputs"))
+                Toast.makeText(getApplication(), "Check your inputs", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+        viewModelScope.launch {
+            _createClass.value = Resource.Loading()
+        }
+        firestore.collection(Constants.CLASSROOM_COLLECTION)
+            .document(classroomId)
+            .set(classroom)
+            .addOnSuccessListener {
+                _createClass.value = Resource.Success(classroom)
+            }.addOnFailureListener {
+                _createClass.value = Resource.Error(it.message.toString())
+            }
+    }
     fun deleteUser(user: User) {
         viewModelScope.launch {
             _user.emit(Resource.Loading())
@@ -187,11 +192,13 @@ class UserManageViewModel @Inject constructor(
             .delete()
             .addOnSuccessListener {
                 viewModelScope.launch {
-                    _user.emit(Resource.Success(user))
+                    _delUser.emit(Resource.Success(user))
                 }
+                Toast.makeText(getApplication(), "Delete User Success", Toast.LENGTH_SHORT).show()
+
             }.addOnFailureListener {
                 viewModelScope.launch {
-                    _user.emit(Resource.Error(it.message.toString()))
+                    _delUser.emit(Resource.Error(it.message.toString()))
                 }
             }
     }
