@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ctut_student.CTUTApplication
 import com.example.ctut_student.data.Classroom
+import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Constants
 import com.example.ctut_student.util.RegisterFieldsState
@@ -36,7 +37,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class UserManageViewModel @Inject constructor(
+class  UserManageViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
     private val storage: StorageReference,
@@ -60,6 +61,9 @@ class UserManageViewModel @Inject constructor(
 
     private val _createClass = MutableStateFlow<Resource<Classroom>>(Resource.Unspecified())
     val createClass: Flow<Resource<Classroom>> = _createClass
+
+    private val _createCourse = MutableStateFlow<Resource<Course>>(Resource.Unspecified())
+    val createCourse: Flow<Resource<Course>> = _createCourse
 
 
     private val _validation = Channel<RegisterFieldsState> ()
@@ -181,6 +185,38 @@ class UserManageViewModel @Inject constructor(
                 _createClass.value = Resource.Success(classroom)
             }.addOnFailureListener {
                 _createClass.value = Resource.Error(it.message.toString())
+            }
+    }
+
+    fun createNewCourse(courseName: String, course: Course) {
+        val areInputsValid = validateEmail(course.lecturerEmail) is RegisterValidation.Success
+                && course.courseName.trim().isNotEmpty()
+                && course.classId.trim().isNotEmpty()
+                && course.lecturer.trim().isNotEmpty()
+        if (!areInputsValid) {
+            viewModelScope.launch {
+                _user.emit(Resource.Error("Check your inputs"))
+                Toast.makeText(getApplication(), "Check your inputs", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+        viewModelScope.launch {
+            _createCourse.value = Resource.Loading()
+        }
+        firestore.collection(Constants.COURSE_COLLECTION)
+            .document(courseName)
+            .set(course)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    getApplication(),
+                    "Course created",
+                    Toast.LENGTH_SHORT
+
+                )
+                    .show()
+                _createCourse.value = Resource.Success(course)
+            }.addOnFailureListener {
+                _createCourse.value = Resource.Error(it.message.toString())
             }
     }
     fun deleteUser(user: User) {

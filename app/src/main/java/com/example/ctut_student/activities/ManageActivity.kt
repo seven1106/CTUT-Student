@@ -11,10 +11,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ctut_student.R
 import com.example.ctut_student.data.Classroom
+import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.ActivityManageBinding
 import com.example.ctut_student.databinding.AddClassromDialogBinding
 import com.example.ctut_student.databinding.AddStudentDialogBinding
+import com.example.ctut_student.databinding.FragmentAddCourseBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.UserManageViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,6 +28,7 @@ class ManageActivity : AppCompatActivity() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var btnAddStudent: LinearLayout
     private lateinit var btnAddClassroom: LinearLayout
+    private lateinit var btnAddCouseL: LinearLayout
     private val viewModel by viewModels<UserManageViewModel>()
     private val binding by lazy {
         ActivityManageBinding.inflate(layoutInflater)
@@ -67,8 +70,68 @@ class ManageActivity : AppCompatActivity() {
             dialog.dismiss()
             showAddClassroomDialog()
         }
+        btnAddCouseL = dialogAddView.findViewById<LinearLayout>(R.id.btnAddCourse)
+        btnAddCouseL.setOnClickListener {
+            dialog.dismiss()
+            showAddCourseDialog()
+        }
 
         dialog.show()
+    }
+
+    private fun showAddCourseDialog() {
+        val dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
+        val binding = FragmentAddCourseBinding.inflate(layoutInflater)
+        val view = binding.root
+        dialog.setContentView(view)
+        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        binding.apply {
+
+            btnAddCourse.setOnClickListener {
+                val course = Course(
+                    edCourseId.text.toString().trim(),
+                    edCourseName.text.toString().trim(),
+                    edLecName.text.toString().trim(),
+                    edLEmail.text.toString().trim(),
+                    edDepartment.text.toString().trim(),
+                    edPTheory.text.toString().trim(),
+                    edTTheory.text.toString().trim()
+                )
+                viewModel.createNewCourse(course.courseName, course)
+                lifecycleScope.launchWhenStarted {
+                    viewModel.createCourse.collectLatest {
+                        when (it) {
+                            is Resource.Loading -> {
+                                btnAddCourse.startAnimation()
+                            }
+
+                            is Resource.Success -> {
+
+                                binding.apply {
+                                    edCourseId.text.clear()
+                                    edCourseName.text.clear()
+                                    edLecName.text.clear()
+                                    edLEmail.text.clear()
+                                    edPTheory.text.clear()
+                                    edTTheory.text.clear()
+                                }
+                                binding.btnAddCourse.revertAnimation()
+                            }
+
+                            is Resource.Error -> {
+
+                                binding.btnAddCourse.revertAnimation()
+                                Log.e("TAGGGG", it.message.toString())
+                            }
+
+                            else -> Unit
+                        }
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 
     private fun showAddClassroomDialog() {
@@ -141,10 +204,7 @@ class ManageActivity : AppCompatActivity() {
         val view = binding.root
         dialog.setContentView(view)
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-
         binding.apply {
-
-
             btnSaveEditStudent.setOnClickListener() {
                     var gender: String = ""
                     val selectedGenderId = genderRadioGroup.checkedRadioButtonId
@@ -168,9 +228,6 @@ class ManageActivity : AppCompatActivity() {
                     val password = edPassword.text.toString().trim()
                     viewModel.createAccountWithEmailAndPassword(user, password)
                 onResume()
-
-
-
                 lifecycleScope.launchWhenStarted {
                         viewModel.register.collectLatest {
                             when (it) {
@@ -197,14 +254,12 @@ class ManageActivity : AppCompatActivity() {
                                         edPassword.text.clear()
                                     }
                                     binding.btnSaveEditStudent.revertAnimation()
-                                    onResume()
                                 }
 
                                 is Resource.Error -> {
 
                                     binding.btnSaveEditStudent.revertAnimation()
                                     Log.e("TAGGGG", it.message.toString())
-
                                 }
 
                                 else -> Unit
