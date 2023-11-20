@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/classrom_management"
+                android:text="@string/classroom_management"
                 android:textColor="@color/g_white"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

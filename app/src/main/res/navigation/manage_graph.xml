@@ -26,7 +26,11 @@
         android:id="@+id/courseManageFragment"
         android:name="com.example.ctut_student.fragments.management.CourseManageFragment"
         android:label="CourseManageFragment"
-        tools:layout="@layout/fragment_course_manage"/>
+        tools:layout="@layout/fragment_course_manage">
+        <action
+            android:id="@+id/action_courseManageFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notiManageFragment"
         android:name="com.example.ctut_student.fragments.management.NotiManageFragment"
@@ -53,5 +57,15 @@
         <argument
             android:name="classroom"
             app:argType="com.example.ctut_student.data.Classroom" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="com.example.ctut_student.fragments.management.CourseDetailFragment"
+        android:label="CourseDetailFragment"
+        tools:layout="@layout/fragment_classroom_detail"
+        >
+        <argument
+            android:name="course"
+            app:argType="com.example.ctut_student.data.Course" />
     </fragment>
 </navigation>

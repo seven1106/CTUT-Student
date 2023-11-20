@@ -34,7 +34,7 @@
     <string name="address">Address</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="classrom_management">Classrom Management</string>
+    <string name="classroom_management">Classroom Management</string>
     <string name="all_class">All Classrom</string>
     <string name="classId">Id Class</string>
     <string name="className">Class Name</string>
@@ -46,4 +46,16 @@
     <string name="addNewUser">Add New User</string>
     <string name="academicYear">Academic Year</string>
     <string name="all_student">All Student</string>
+    <string name="theory_periods">Theory periods</string>
+    <string name="practice_periods">"Practice period "</string>
+    <string name="course_id">Course id</string>
+    <string name="course_name">Course name</string>
+    <string name="lecturer_name">Lecturer name</string>
+    <string name="course_description">Course description</string>
+    <string name="lecturer_email">Lecturer email</string>
+    <string name="addNewCourse">Add New Course</string>
+    <string name="course_management">Course management</string>
+    <string name="all_course">All course</string>
+    <string name="practiceDocument">Practice document</string>
+    <string name="lesson">Lesson</string>
 </resources>

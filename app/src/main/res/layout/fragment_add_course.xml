@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="25dp"
+    android:fillViewport="true"
+    android:background="@drawable/top_radius_white">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressbarAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imageUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_schedule"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageStudent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="6dp"
+
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="6dp"
+                android:src="@drawable/ic_elearning"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/edTTheory"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/theory_periods"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/edPTheory"
+            app:layout_constraintStart_toStartOf="@+id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edLEmail" />
+
+        <EditText
+            android:id="@+id/edPTheory"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/practice_periods"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toEndOf="@+id/edTTheory"
+            app:layout_constraintTop_toBottomOf="@+id/edLEmail" />
+
+        <EditText
+            android:id="@+id/edCourseId"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/classId"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/imageUser" />
+
+        <EditText
+            android:id="@+id/edCourseName"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/course_name"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edCourseId" />
+        <EditText
+            android:id="@+id/edLecName"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/lecturer_name"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edCourseName" />
+
+
+        <EditText
+            android:id="@+id/edDepartment"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/department"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edLecName" />
+
+        <EditText
+            android:id="@+id/edLEmail"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/lecturer_email"
+
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edDepartment" />
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/btnAddCourse"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/blue_background"
+            android:fontFamily="@font/poppins_light"
+            android:text="@string/addNewCourse"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edTTheory"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
