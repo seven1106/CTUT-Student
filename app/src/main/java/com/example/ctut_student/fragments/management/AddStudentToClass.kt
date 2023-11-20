@@ -39,7 +39,6 @@ class AddStudentToClass : Fragment(R.layout.fragment_add_st_to_cl) {
         val classroom = args.classroom
         userAdapter.onClick = {
             viewModel.updateStudentClassId(classroom.classId, it)
-            viewModel.fetchStudentNoClass()
         }
 
         binding.apply {
@@ -68,6 +67,31 @@ class AddStudentToClass : Fragment(R.layout.fragment_add_st_to_cl) {
                         binding.UserManageProgressbar.visibility = View.GONE
                         userAdapter.differ.submitList(it.data)
                         Log.i("TAGclass", it.data.toString())
+                    }
+
+                    is Resource.Error -> {
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        Log.i("TAGclass", it.message.toString())
+                    }
+
+
+                    else -> Unit
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.upduser.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        Log.i("TAGclass", it.data.toString())
+                        viewModel.fetchStudentNoClass()
+                        Toast.makeText(requireContext(), "Add student successfully", Toast.LENGTH_SHORT).show()
                     }
 
                     is Resource.Error -> {

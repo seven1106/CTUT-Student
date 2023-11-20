@@ -34,6 +34,9 @@ class ClassroomManageViewModel @Inject constructor(
     private val _users = MutableStateFlow<Resource<List<User>>>(Resource.Unspecified())
     val users: StateFlow<Resource<List<User>>> = _users
 
+    private val _upduser = MutableStateFlow<Resource<User>>(Resource.Unspecified())
+    val upduser: StateFlow<Resource<User>> = _upduser
+
     init {
         fetchAllClass()
         fetchStudentNoClass()
@@ -120,15 +123,43 @@ class ClassroomManageViewModel @Inject constructor(
     }
     fun updateStudentClassId(classId: String, user: User) {
         viewModelScope.launch {
-            _users.emit(Resource.Loading())
+            _upduser.emit(Resource.Loading())
         }
         firestore.collection("user").document(user.email).update("classId", classId).addOnSuccessListener {
+            viewModelScope.launch {
+                _upduser.emit(Resource.Success((user)))
+            }
+        }.addOnFailureListener {
+            viewModelScope.launch {
+                _upduser.emit(Resource.Error(it.message.toString()))
+            }
+        }
+    }
+    fun deleteStudentFromClass1(classId: String, user: User) {
+        viewModelScope.launch {
+            _users.emit(Resource.Loading())
+        }
+        firestore.collection("classroom").document(classId).update("students", FieldValue.arrayRemove(user)).addOnSuccessListener {
             viewModelScope.launch {
                 _users.emit(Resource.Success(listOf(user)))
             }
         }.addOnFailureListener {
             viewModelScope.launch {
                 _users.emit(Resource.Error(it.message.toString()))
+            }
+        }
+    }
+    fun deleteStudentFromClass (user: User) {
+        viewModelScope.launch {
+            _upduser.emit(Resource.Loading())
+        }
+        firestore.collection("user").document(user.email).update("classId", "").addOnSuccessListener {
+            viewModelScope.launch {
+                _upduser.emit(Resource.Success((user)))
+            }
+        }.addOnFailureListener {
+            viewModelScope.launch {
+                _upduser.emit(Resource.Error(it.message.toString()))
             }
         }
     }

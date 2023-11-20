@@ -19,6 +19,7 @@ import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+
 @AndroidEntryPoint
 class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
 
@@ -54,6 +55,9 @@ class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
             tvAdvisor.text = classroom.adviser
 
         }
+        userAdapter.onClickDelete = {
+            viewModel.deleteStudentFromClass(it)
+        }
 
     }
 
@@ -62,6 +66,7 @@ class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
         val classroom = args.classroom
         viewModel.fetchStudentInClass(classroom.classId)
     }
+
     private fun setUpStudentInClassRv() {
         userAdapter = UserAdapter()
         binding.rvUser.apply {
@@ -80,6 +85,29 @@ class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                         binding.UserManageProgressbar.visibility = View.GONE
                         userAdapter.differ.submitList(it.data)
                         Log.i("TAGclass", it.data.toString())
+                    }
+
+                    is Resource.Error -> {
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        Log.i("TAGclass", it.message.toString())
+                    }
+
+
+                    else -> Unit
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.upduser.collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.UserManageProgressbar.visibility = View.GONE
+                        viewModel.fetchStudentInClass(args.classroom.classId)
                     }
 
                     is Resource.Error -> {

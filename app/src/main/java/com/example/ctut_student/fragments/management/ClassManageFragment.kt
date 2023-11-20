@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ctut_student.R
 import com.example.ctut_student.adapters.ClassroomAdapter
+import com.example.ctut_student.adapters.UserAdapter
 import com.example.ctut_student.databinding.FragmentClassManageBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
     private lateinit var binding: FragmentClassManageBinding
     private lateinit var classroomAdapter: ClassroomAdapter
+    private lateinit var userAdapter: UserAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,6 +44,7 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
             findNavController().navigate(R.id.action_classManageFragment_to_classDetailFragment, b)
 
         }
+
     }
 
     private fun setUpClassroomRv() {
