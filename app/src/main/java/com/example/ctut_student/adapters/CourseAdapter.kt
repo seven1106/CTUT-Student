@@ -25,6 +25,7 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
         }
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
             return oldItem == newItem
         }
