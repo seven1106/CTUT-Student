@@ -3,8 +3,10 @@ package com.example.ctut_student.data
 data class Notification(
     var title: String,
     var body: String,
+    val classId: String,
+    val courseName: String,
 ) {
-    constructor() : this("", "")
+    constructor() : this("", "", "", "")
 
 }
 
