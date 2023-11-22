@@ -1,19 +1,18 @@
 package com.example.ctut_student.data
 
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 
 class Course(
-    val classId: String,
-    val courseName: String,
-    val lecturer: String,
-    val lecturerEmail: String,
-    val department: String,
-    val theoryPeriods: String,
-        val practicePeriods: String,
-    val noti: List<String> = emptyList(),
-    val lesson: List<LessonDoc> = emptyList(),
+    var classId: String,
+    var courseName: String,
+    var lecturer: String,
+    var lecturerEmail: String,
+    var department: String,
+    var theoryPeriods: String,
+    var practicePeriods: String,
+    val noti: List<Notification> = emptyList(),
+    val lesson: List<Lesson> = emptyList(),
     val practiceDoc: List<PracticeDoc> = emptyList(),
 
     ): Parcelable {
@@ -23,7 +22,9 @@ class Course(
         TODO("Not yet implemented")
     }
 
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        TODO("Not yet implemented")
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(courseName)
+        parcel.writeString(lecturer)
+        parcel.writeString(classId)
     }
 }
