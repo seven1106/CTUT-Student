@@ -58,4 +58,8 @@
     <string name="all_course">All course</string>
     <string name="practiceDocument">Practice document</string>
     <string name="lesson">Lesson</string>
+    <string name="body">Content</string>
+    <string name="title">Title</string>
+    <string name="add">Add new</string>
+    <string name="edit_info">Edit info</string>
 </resources>

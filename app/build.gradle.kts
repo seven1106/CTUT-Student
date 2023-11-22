@@ -95,9 +95,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //firebase
+    implementation("com.google.firebase:firebase-bom:28.4.1")
     implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
     implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    //Coroutines for firebase
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1")
 }

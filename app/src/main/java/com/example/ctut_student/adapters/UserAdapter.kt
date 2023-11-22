@@ -20,10 +20,12 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         @SuppressLint("SetTextI18n")
         fun bind(user: User) {
             binding.apply {
-                Glide.with(itemView).load(user.imagePath).into(ivUserAvt)
                 tvUserName.text = "${user.lastName} ${user.firstName}"
                 tvUserClassroom.text = user.email
                 tvUserId.text = user.specialty
+                if (user.imagePath !== "") {
+                    Glide.with(itemView).load(user.imagePath).into(ivUserAvt)
+                }
             }
         }
     }

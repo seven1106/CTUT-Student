@@ -44,6 +44,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
     private lateinit var sf: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private var imageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sf = requireActivity().getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
@@ -53,8 +54,8 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     result?.data?.data?.let {
                         imageUri = it
-                        Glide.with(this).load(imageUri).into(binding.ivLogout)
-
+                        Toast.makeText(requireContext(), "Image selected", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 } else {
                     Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
@@ -163,7 +164,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
         val binding = EditStudentDialogBinding.inflate(layoutInflater)
         val view = binding.root
         dialog.setContentView(view)
-        dialog.behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         binding.apply {
             edFirstName.text = Editable.Factory.getInstance().newEditable(user?.firstName)
             edLastName.text = Editable.Factory.getInstance().newEditable(user?.lastName)
@@ -184,11 +185,11 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             }
 
 
-//            imageEdit.setOnClickListener {
-//                val intent = Intent(Intent.ACTION_GET_CONTENT)
-//                intent.type = "image/*"
-//                imageActivityResultLauncher.launch(intent)
-//            }
+            imageEdit.setOnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                imageActivityResultLauncher.launch(intent)
+            }
             lifecycleScope.launchWhenStarted {
                 viewModel.updateInfo.collect {
                     when (it) {
@@ -235,6 +236,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                     specialty = edSpecialty.text.toString().trim()
                 )
                 viewModel.updateUser(userEdit, imageUri)
+                dialog.dismiss()
 
             }
         }
