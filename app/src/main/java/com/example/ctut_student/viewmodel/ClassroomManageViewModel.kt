@@ -16,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -95,7 +94,6 @@ class ClassroomManageViewModel @Inject constructor(
                 val users = it.toObjects(User::class.java)
                 Log.i("TAGfetch", it.toString())
                 viewModelScope.launch {
-
                     _users.emit(Resource.Success(users))
                 }
             }.addOnFailureListener {

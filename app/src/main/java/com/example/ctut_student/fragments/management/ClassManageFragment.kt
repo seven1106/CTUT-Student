@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.collectLatest
 class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
     private lateinit var binding: FragmentClassManageBinding
     private lateinit var classroomAdapter: ClassroomAdapter
-    private lateinit var userAdapter: UserAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
