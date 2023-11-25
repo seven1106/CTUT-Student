@@ -6,7 +6,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ctut_student.R
 import com.example.ctut_student.databinding.ActivityDashboardBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DashboardActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityDashboardBinding.inflate(layoutInflater)
