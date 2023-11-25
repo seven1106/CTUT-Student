@@ -98,6 +98,11 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+notiAdapter.startListening()
+        lessonAdapter.startListening()
+    }
     private fun showEditCourseInfoDialog() {
         val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
         val binding = EditCourseDialogBinding.inflate(layoutInflater)
@@ -150,6 +155,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                     is Resource.Success -> {
                         binding.progressBar.visibility = View.GONE
                         lessonAdapter.differ.submitList(it.data)
+
                     }
 
                     is Resource.Error -> {
@@ -230,7 +236,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                         is Resource.Success -> {
                             binding.apply {
                                 edTitle.text.clear()
-
                             }
                             binding.btnAddLesson.revertAnimation()
                             Toast.makeText(
@@ -238,6 +243,8 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                                 "Notification added",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            viewModel.featchLesson(args.course.classId, args.course.courseName)
+
                         }
 
                         is Resource.Error -> {
@@ -268,7 +275,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                 )
                 val course = args.course
                 if (noti.title.isNotEmpty() && noti.body.isNotEmpty()) {
-                    viewModel.addNoti(course.courseName, noti)
+                    viewModel.addNoti(noti)
                     dialog.dismiss()
                 } else {
                     Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT)
@@ -294,6 +301,7 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                                 "Notification added",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            viewModel.featchNoti(args.course.classId, args.course.courseName)
                         }
 
                         is Resource.Error -> {

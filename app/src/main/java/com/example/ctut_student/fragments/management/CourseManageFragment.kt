@@ -33,7 +33,7 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpClassroomRv()
+        setUpCourseRv()
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchAllCourse()
         }
@@ -42,9 +42,12 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
             findNavController().navigate(R.id.action_courseManageFragment_to_courseDetailFragment, b)
 
         }
+        courseAdapter.onClickDelete = {
+            viewModel.deleteCourse(it)
+        }
     }
 
-    private fun setUpClassroomRv() {
+    private fun setUpCourseRv() {
         courseAdapter = CourseAdapter()
         binding.rvCourse.apply {
             adapter = courseAdapter

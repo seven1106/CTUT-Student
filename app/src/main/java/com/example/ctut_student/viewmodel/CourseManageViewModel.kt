@@ -33,7 +33,6 @@ import javax.inject.Inject
 
 class CourseManageViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val auth: FirebaseAuth,
     private val storage: StorageReference,
     app: Application
 
@@ -81,12 +80,12 @@ class CourseManageViewModel @Inject constructor(
 
     }
 
-    fun addNoti(courseName: String, notification: Notification) {
+    fun addNoti(notification: Notification) {
         viewModelScope.launch {
             _noti.emit(Resource.Loading())
         }
         firestore.collection("noti")
-            .document()
+            .document(notification.title)
             .set(notification)
             .addOnSuccessListener {
                 viewModelScope.launch {
@@ -181,8 +180,6 @@ class CourseManageViewModel @Inject constructor(
                     .addOnSuccessListener {
                         viewModelScope.launch {
                             _lesson.emit(Resource.Success(lesson))
-                            Toast.makeText(getApplication(), "Lesson added", Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }.addOnFailureListener {
                         viewModelScope.launch {
@@ -266,6 +263,30 @@ class CourseManageViewModel @Inject constructor(
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _course.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+
+    fun deleteCourse(course: Course) {
+        viewModelScope.launch {
+            _course.emit(Resource.Loading())
+        }
+        firestore.collection("course")
+            .whereEqualTo("courseName", course.courseName)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                }
+                viewModelScope.launch {
+                    _course.emit(Resource.Success(listOf(course)))
+                    Toast.makeText(getApplication(), "Success", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                viewModelScope.launch {
+                    _course.emit(Resource.Error(exception.message.toString()))
                 }
             }
     }

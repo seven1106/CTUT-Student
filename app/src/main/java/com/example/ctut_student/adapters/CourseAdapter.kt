@@ -3,19 +3,27 @@ package com.example.ctut_student.adapters
 import android.annotation.SuppressLint
 import com.example.ctut_student.databinding.CourseRvItemBinding
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ctut_student.data.Course
+import com.example.ctut_student.data.Lesson
+import com.google.firebase.auth.FirebaseAuth
 
 class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     inner class CourseViewHolder(private val binding: CourseRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(course: Course) {
             binding.apply {
                 tvCourseName.text = course.courseName
                 tvAdvisor.text = course.lecturer
                 tvDepartment.text = course.classId
+            }
+            if (auth.currentUser?.email != "zxc@zxc.zxc") {
+                binding.ibDeleteUser.visibility = View.INVISIBLE
             }
         }
     }
@@ -35,6 +43,8 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         val inflater = LayoutInflater.from(parent.context)
         val binding = CourseRvItemBinding.inflate(inflater, parent, false)
         return CourseViewHolder(binding)
+
+
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
@@ -43,6 +53,9 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         holder.itemView.setOnClickListener {
             onClick?.invoke(course)
         }
+        holder.itemView.findViewById<android.widget.ImageView>(com.example.ctut_student.R.id.ibDeleteUser).setOnClickListener {
+            onClickDelete?.invoke(course)
+        }
 
     }
 
@@ -50,5 +63,8 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         return differ.currentList.size
     }
     var onClick: ((Course) -> Unit)? = null
+    var onClickDelete: ((Course) -> Unit)? = null
+
+
 
 }
