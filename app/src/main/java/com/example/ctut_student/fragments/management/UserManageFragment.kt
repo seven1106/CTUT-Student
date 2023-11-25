@@ -194,16 +194,13 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                 viewModel.updateInfo.collect {
                     when (it) {
                         is Resource.Loading -> {
-                            Log.e("TAGGGG", it.data.toString())
                             binding.btnEditStudent.startAnimation()
                         }
 
                         is Resource.Success -> {
-                            Log.e("TAGGGG", it.data.toString())
-
                             binding.btnEditStudent.revertAnimation()
                             viewModel.fetchAllUsers()
-
+                            dialog.dismiss()
                         }
 
                         is Resource.Error -> {
@@ -233,10 +230,10 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                     address = edAddress.text.toString().trim(),
                     phoneNumber = edPhone.text.toString().trim(),
                     dayOfBirth = edDoB.text.toString().trim(),
-                    specialty = edSpecialty.text.toString().trim()
+                    specialty = edSpecialty.text.toString().trim(),
+                    id = user?.id.toString()
                 )
                 viewModel.updateUser(userEdit, imageUri)
-                dialog.dismiss()
 
             }
         }

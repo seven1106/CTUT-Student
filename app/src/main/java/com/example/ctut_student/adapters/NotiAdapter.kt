@@ -4,6 +4,7 @@ package com.example.ctut_student.adapters
 import android.annotation.SuppressLint
 import com.example.ctut_student.databinding.CourseRvItemBinding
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -13,14 +14,21 @@ import com.example.ctut_student.R
 import com.example.ctut_student.data.Notification
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.NotiRvItemBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     inner class NotiViewHolder(private val binding: NotiRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(noti: Notification) {
             binding.apply {
                 tvTitle.text = noti.title
                 tvBody.text = noti.body
+                if (auth.currentUser?.email != "zxc@zxc.zxc") {
+                    ibDeleteUser.visibility = View.INVISIBLE
+                }
             }
+
         }
     }
     private val diffCallback = object : DiffUtil.ItemCallback<Notification>() {
@@ -56,6 +64,12 @@ class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
+    fun startListening() {
+        notifyDataSetChanged()
+
+    }
+
     var onClick: ((Notification) -> Unit)? = null
     var onClickDelete: ((Notification) -> Unit)? = null
 }

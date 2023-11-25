@@ -32,4 +32,6 @@ object AppModule {
     @Singleton
     fun provideUserCollectionRef(rootRef:FirebaseFirestore) = rootRef.collection(USER_COLLECTION)
 
+
+
 }
