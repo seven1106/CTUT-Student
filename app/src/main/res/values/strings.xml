@@ -62,4 +62,6 @@
     <string name="title">Title</string>
     <string name="add">Add new</string>
     <string name="edit_info">Edit info</string>
+    <string name="My_courses">My courses</string>
+    <string name="ctut">CTUT</string>
 </resources>

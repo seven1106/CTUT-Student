@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_elearning"/>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ProfileFragment"
+        android:name="com.example.ctut_student.fragments.dashboard.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 </navigation>
