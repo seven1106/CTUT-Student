@@ -15,6 +15,7 @@ class ClassroomAdapter: RecyclerView.Adapter<ClassroomAdapter.ClassroomViewHolde
                 tvClassName.text = classroom.className
                 tvAdvisor.text = classroom.adviser
                 tvAcademicYear.text = classroom.academicYear
+
             }
         }
     }
@@ -41,6 +42,9 @@ class ClassroomAdapter: RecyclerView.Adapter<ClassroomAdapter.ClassroomViewHolde
         holder.itemView.setOnClickListener {
             onClick?.invoke(classroom)
         }
+        holder.itemView.findViewById<android.widget.ImageView>(com.example.ctut_student.R.id.ibDeleteUser).setOnClickListener {
+            onClickDelete?.invoke(classroom)
+        }
 
     }
 
@@ -48,5 +52,6 @@ class ClassroomAdapter: RecyclerView.Adapter<ClassroomAdapter.ClassroomViewHolde
         return differ.currentList.size
     }
     var onClick: ((Classroom) -> Unit)? = null
+    var onClickDelete: ((Classroom) -> Unit)? = null
 
 }

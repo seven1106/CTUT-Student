@@ -43,7 +43,31 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
             findNavController().navigate(R.id.action_classManageFragment_to_classDetailFragment, b)
 
         }
+        classroomAdapter.onClickDelete = {
+            viewModel.deleteClass(it)
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.classroom.collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.ClassManageProgressbar.visibility = View.VISIBLE
+                    }
 
+                    is Resource.Success -> {
+                        binding.ClassManageProgressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), "Delete successfully", Toast.LENGTH_SHORT).show()
+                        viewModel.fetchAllClass()
+                    }
+
+                    is Resource.Error -> {
+                        binding.ClassManageProgressbar.visibility = View.GONE
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
     }
 
     private fun setUpClassroomRv() {

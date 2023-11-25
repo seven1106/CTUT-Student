@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ctut_student.data.Classroom
+import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Resource
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,9 @@ class ClassroomManageViewModel @Inject constructor(
 ) : AndroidViewModel(app) {
     private val _classrooms = MutableStateFlow<Resource<List<Classroom>>>(Resource.Unspecified())
     val classrooms: StateFlow<Resource<List<Classroom>>> = _classrooms
+
+    private val _classroom = MutableStateFlow<Resource<Classroom>>(Resource.Unspecified())
+    val classroom: StateFlow<Resource<Classroom>> = _classroom
 
     private val _users = MutableStateFlow<Resource<List<User>>>(Resource.Unspecified())
     val users: StateFlow<Resource<List<User>>> = _users
@@ -123,7 +127,7 @@ class ClassroomManageViewModel @Inject constructor(
         viewModelScope.launch {
             _upduser.emit(Resource.Loading())
         }
-        firestore.collection("user").document(user.email).update("classId", classId).addOnSuccessListener {
+        firestore.collection("user").document(user.id).update("classId", classId).addOnSuccessListener {
             viewModelScope.launch {
                 _upduser.emit(Resource.Success((user)))
             }
@@ -151,7 +155,7 @@ class ClassroomManageViewModel @Inject constructor(
         viewModelScope.launch {
             _upduser.emit(Resource.Loading())
         }
-        firestore.collection("user").document(user.email).update("classId", "").addOnSuccessListener {
+        firestore.collection("user").document(user.id).update("classId", "").addOnSuccessListener {
             viewModelScope.launch {
                 _upduser.emit(Resource.Success((user)))
             }
@@ -160,5 +164,48 @@ class ClassroomManageViewModel @Inject constructor(
                 _upduser.emit(Resource.Error(it.message.toString()))
             }
         }
+    }
+
+    fun deleteClass(classroom: Classroom) {
+        viewModelScope.launch {
+            _classrooms.emit(Resource.Loading())
+        }
+        firestore.collection("classroom").document(classroom.classId).delete()
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _classroom.emit(Resource.Success((classroom)))
+                }
+            }.addOnFailureListener {
+            viewModelScope.launch {
+                _classroom.emit(Resource.Error(it.message.toString()))
+            }
+        }
+        firestore.collection("user").whereEqualTo("classId", classroom.classId).get()
+            .addOnSuccessListener {
+                val users = it.toObjects(User::class.java)
+                for (user in users) {
+                    firestore.collection("user").document(user.id).update("classId", "")
+                        .addOnSuccessListener {
+                            viewModelScope.launch {
+                                _users.emit(Resource.Success(listOf(user)))
+                            }
+                        }.addOnFailureListener {
+                        viewModelScope.launch {
+                            _users.emit(Resource.Error(it.message.toString()))
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+            viewModelScope.launch {
+                _users.emit(Resource.Error(it.message.toString()))
+            }
+        }
+        firestore.collection("course").whereEqualTo("classId", classroom.classId).get()
+            .addOnSuccessListener {
+                val courses = it.toObjects(Course::class.java)
+                for (course in courses) {
+                    firestore.collection("course").document(course.courseName).update("classId", "")
+                }
+            }
     }
 }
