@@ -67,9 +67,7 @@ class  UserManageViewModel @Inject constructor(
 
 
     private val _validation = Channel<RegisterFieldsState> ()
-    val validetion = _validation.receiveAsFlow()
 
-    private val pagingInfo = PagingInfo()
     init {
         fetchAllUsers()
         getUser()
@@ -137,9 +135,9 @@ class  UserManageViewModel @Inject constructor(
                 _register.emit(Resource.Loading())
             }
             auth.createUserWithEmailAndPassword(user.email, password)
-                .addOnSuccessListener {
+                .addOnSuccessListener { it ->
                     it.user?.let {
-                        saveUserInfo(it.email!!, user)
+                        saveUserInfo(it.uid, user)
                     }
                 }.addOnFailureListener {
 
@@ -150,6 +148,7 @@ class  UserManageViewModel @Inject constructor(
 
     }
     private fun saveUserInfo(userUid: String, user: User) {
+        user.id = userUid
         firestore.collection(Constants.USER_COLLECTION)
             .document(userUid)
             .set(user)
@@ -223,8 +222,14 @@ class  UserManageViewModel @Inject constructor(
         viewModelScope.launch {
             _user.emit(Resource.Loading())
         }
+        val storageRef = storage.child("profileImages/${user.email}/avt${user.id}")
+        storageRef.listAll().addOnSuccessListener {
+            it.items.forEach { item ->
+                item.delete()
+            }
+        }
         firestore.collection(Constants.USER_COLLECTION)
-            .document(user.email.lowercase())
+            .document(user.id)
             .delete()
             .addOnSuccessListener {
                 viewModelScope.launch {
@@ -274,7 +279,7 @@ class  UserManageViewModel @Inject constructor(
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 96, byteArrayOutputStream)
                 val imageByteArray = byteArrayOutputStream.toByteArray()
                 val imageDirectory =
-                    storage.child("profileImages/${user.email}/${UUID.randomUUID()}")
+                    storage.child("profileImages/${user.email}/avt${user.id}")
                 val result = imageDirectory.putBytes(imageByteArray).await()
                 val imageUrl = result.storage.downloadUrl.await().toString()
                 saveUserInformation(user.copy(imagePath = imageUrl), false)
@@ -290,7 +295,7 @@ class  UserManageViewModel @Inject constructor(
 
     private fun saveUserInformation(user: User, shouldRetrievedOldImage: Boolean) {
         firestore.runTransaction { transaction ->
-            val documentRef = firestore.collection("user").document(user.email)
+            val documentRef = firestore.collection("user").document(user.id)
             if (shouldRetrievedOldImage) {
                 val currentUser = transaction.get(documentRef).toObject(User::class.java)
                 val newUser = user.copy(imagePath = currentUser?.imagePath ?: "")
@@ -311,6 +316,7 @@ class  UserManageViewModel @Inject constructor(
         }.addOnFailureListener {
             viewModelScope.launch {
                 _updateInfo.emit(Resource.Error(it.message.toString()))
+                Log.i("fata", it.message.toString())
             }
         }
     }
