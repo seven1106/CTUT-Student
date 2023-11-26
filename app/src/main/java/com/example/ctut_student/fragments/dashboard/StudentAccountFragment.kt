@@ -2,6 +2,7 @@ package com.example.ctut_student.fragments.dashboard
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.FragmentAccountDetailBinding
 import com.example.ctut_student.databinding.FragmentHomeBinding
+import com.example.ctut_student.dialog.setupBottomSheetDialog
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClientViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,6 +104,13 @@ class StudentAccountFragment : Fragment() {
                 }
             }
         }
+        binding.tvForgotPasswordLogin.paintFlags = binding.tvForgotPasswordLogin.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        binding.tvForgotPasswordLogin.setOnClickListener {
+            setupBottomSheetDialog { email ->
+                viewModel.resetPassword(email)
+            }
+        }
+
         binding.btnEditStudent.setOnClickListener {
             binding.apply {
                 val user = User(

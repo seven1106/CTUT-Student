@@ -3,6 +3,7 @@ package com.example.ctut_student.fragments.loginRegister
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,8 +58,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.tvDontHaveAccount.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+        binding.tvForgotPasswordLogin.paintFlags = binding.tvForgotPasswordLogin.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         binding.apply {
+            tvDontHaveAccount.paintFlags = binding.tvDontHaveAccount.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
         val emailsf = sf.getString("email", "")
         val passwordsf = sf.getString("password", "")
         val isChecked = sf.getBoolean("isChecked", false)

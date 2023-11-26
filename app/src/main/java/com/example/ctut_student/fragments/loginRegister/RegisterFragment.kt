@@ -1,5 +1,6 @@
 package com.example.ctut_student.fragments.loginRegister
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,6 +48,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
         binding.apply {
+            tvDoYouHaveAccount.paintFlags = binding.tvDoYouHaveAccount.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
             buttonRegisterRegister.setOnClickListener {
                 val user = User(
                     edFirstNameRegister.text.toString().trim(),
