@@ -41,9 +41,14 @@ class ElearningFragment:Fragment(R.layout.fragment_elearning){
         }
         courseAdapter.onClick = {
             val b = Bundle().apply { putParcelable("course", it) }
-            findNavController().navigate(R.id.action_courseManageFragment_to_courseDetailFragment, b)
+            findNavController().navigate(R.id.action_elearningFragment_to_courseDetailFragment, b)
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchCourse()
     }
 
     private fun setUpCourseRv() {

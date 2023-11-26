@@ -1,6 +1,7 @@
 package com.example.ctut_student.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.ctut_student.databinding.CourseRvItemBinding
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.Lesson
+import com.example.ctut_student.data.User
 import com.google.firebase.auth.FirebaseAuth
 
 class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
 
     inner class CourseViewHolder(private val binding: CourseRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(course: Course) {
@@ -25,6 +28,24 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
             if (auth.currentUser?.email != "zxc@zxc.zxc") {
                 binding.ibDeleteUser.visibility = View.INVISIBLE
             }
+            firestore.collection("user").document(auth.uid!!)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w("TAG", "Listen failed.", error)
+                        return@addSnapshotListener
+                    } else {
+                        val user = value?.toObject(User::class.java)
+                        user?.let {
+                            val userRole =
+                                user.role
+                            if (userRole == "admin") {
+                                binding.ibDeleteUser.visibility = View.VISIBLE
+                            } else {
+                                    binding.ibDeleteUser.visibility = View.INVISIBLE
+                            }
+                        }
+                    }
+                }
         }
     }
     private val diffCallback = object : DiffUtil.ItemCallback<Course>() {

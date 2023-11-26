@@ -20,6 +20,7 @@ import com.example.ctut_student.adapters.UserAdapter
 import com.example.ctut_student.databinding.FragmentClassroomDetailBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -31,7 +32,6 @@ class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
     private lateinit var userAdapter: UserAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
     private lateinit var emailActivityResultLauncher: ActivityResultLauncher<Intent>
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -66,6 +66,7 @@ class ClassDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                 emailActivityResultLauncher.launch(Intent.createChooser(intent, ""))
 
             }
+
         }
 
         userAdapter.onClickDelete = {

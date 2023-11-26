@@ -1,6 +1,7 @@
 package com.example.ctut_student.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ctut_student.R
 import com.example.ctut_student.data.Lesson
+import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.LessonRvItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
 
     inner class LessonViewHolder(private val binding: LessonRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,9 +25,24 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
             binding.apply {
                 tvTitle.text = lesson.lessonName
                 tvBody.text = "Download PDF"
-                if (auth.currentUser?.email != "zxc@zxc.zxc") {
-                    ibDeleteUser.visibility = View.INVISIBLE
-                }
+                firestore.collection("user").document(auth.uid!!)
+                    .addSnapshotListener { value, error ->
+                        if (error != null) {
+                            Log.w("TAG", "Listen failed.", error)
+                            return@addSnapshotListener
+                        } else {
+                            val user = value?.toObject(User::class.java)
+                            user?.let {
+                                val userRole =
+                                    user.role
+                                if (userRole == "admin") {
+                                    binding.ibDeleteUser.visibility = View.VISIBLE
+                                } else {
+                                    binding.ibDeleteUser.visibility = View.INVISIBLE
+                                }
+                            }
+                        }
+                    }
             }
         }
     }

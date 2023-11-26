@@ -2,6 +2,7 @@ package com.example.ctut_student.adapters
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.ctut_student.databinding.CourseRvItemBinding
 import android.view.LayoutInflater
 import android.view.View
@@ -18,15 +19,31 @@ import com.google.firebase.auth.FirebaseAuth
 
 class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
 
     inner class NotiViewHolder(private val binding: NotiRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(noti: Notification) {
             binding.apply {
                 tvTitle.text = noti.title
                 tvBody.text = noti.body
-                if (auth.currentUser?.email != "zxc@zxc.zxc") {
-                    ibDeleteUser.visibility = View.INVISIBLE
-                }
+                firestore.collection("user").document(auth.uid!!)
+                    .addSnapshotListener { value, error ->
+                        if (error != null) {
+                            Log.w("TAG", "Listen failed.", error)
+                            return@addSnapshotListener
+                        } else {
+                            val user = value?.toObject(User::class.java)
+                            user?.let {
+                                val userRole =
+                                    user.role
+                                if (userRole == "admin") {
+                                    binding.ibDeleteUser.visibility = View.VISIBLE
+                                } else {
+                                    binding.ibDeleteUser.visibility = View.INVISIBLE
+                                }
+                            }
+                        }
+                    }
             }
 
         }
