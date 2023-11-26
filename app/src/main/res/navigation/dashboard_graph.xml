@@ -19,10 +19,34 @@
         android:id="@+id/elearningFragment"
         android:name="com.example.ctut_student.fragments.dashboard.ElearningFragment"
         android:label="ElearningFragment"
-        tools:layout="@layout/fragment_elearning"/>
+        tools:layout="@layout/fragment_elearning">
+
+        <action
+            android:id="@+id/action_elearningFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.ctut_student.fragments.dashboard.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_studentAccountFragment"
+            app:destination="@id/studentAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="com.example.ctut_student.fragments.management.CourseDetailFragment"
+        android:label="CourseDetailFragment"
+        tools:layout="@layout/fragment_classroom_detail"
+        >
+        <argument
+            android:name="course"
+            app:argType="com.example.ctut_student.data.Course" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentAccountFragment"
+        android:name="com.example.ctut_student.fragments.dashboard.StudentAccountFragment"
+        android:label="StudentAccountFragment"
+        tools:layout="@layout/fragment_account_detail"/>
 </navigation>

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.example.ctut_student.adapters.LessonAdapter
 import com.example.ctut_student.adapters.NotiAdapter
 import com.example.ctut_student.data.Lesson
 import com.example.ctut_student.data.Notification
+import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.AddLessonDialogBinding
 import com.example.ctut_student.databinding.AddNotiDialogBinding
 import com.example.ctut_student.databinding.EditCourseDialogBinding
@@ -27,6 +29,8 @@ import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.CourseManageViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -41,6 +45,9 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
     private lateinit var pdfActivityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var notiAdapter: NotiAdapter
     private lateinit var lessonAdapter: LessonAdapter
+    private val auth = FirebaseAuth.getInstance()
+    private lateinit var emailActivityResultLauncher: ActivityResultLauncher<Intent>
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,9 +59,21 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pdfActivityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                uri = it.data?.data
-                Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    result?.data?.data?.let {
+                        uri = it
+                        Toast.makeText(requireContext(), "PDF selected", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No PDF selected", Toast.LENGTH_SHORT).show()
+                }
+            }
+        emailActivityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                result?.data?.data?.let {
+                }
             }
     }
 
@@ -75,8 +94,27 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
         lessonAdapter.onClick = {
             viewModel.downloadPdf(it, requireContext())
         }
-
         binding.apply {
+            firestore.collection("user").document(auth.uid!!)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Log.w("TAG", "Listen failed.", error)
+                        return@addSnapshotListener
+                    } else {
+                        val user = value?.toObject(User::class.java)
+                        user?.let {
+                            val userRole =
+                                user.role
+                            if (userRole == "admin") {
+                                llAddNoti.visibility = View.VISIBLE
+                                btnEditCourseInfo.visibility = View.VISIBLE
+                            } else {
+                                llAddNoti.visibility = View.GONE
+                                btnEditCourseInfo.visibility = View.GONE
+                            }
+                        }
+                    }
+                }
             btnRefresh.setOnClickListener {
                 viewModel.featchNoti(course.classId, course.courseName)
             }
@@ -85,6 +123,14 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
             }
             btnEditCourseInfo.setOnClickListener {
                 showEditCourseInfoDialog()
+            }
+            btnContact.setOnClickListener() {
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "plain/text"
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(course.lecturerEmail))
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Dear, ${course.lecturer}")
+                emailActivityResultLauncher.launch(Intent.createChooser(intent, ""))
+
             }
             tvCourseName.text = course.courseName
             tvAdvisor.text = course.lecturer
@@ -266,6 +312,7 @@ notiAdapter.startListening()
         dialog.setContentView(view)
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         binding.apply {
+
             btnAddNoti.setOnClickListener {
                 val noti = Notification(
                     edTitle.text.toString(),

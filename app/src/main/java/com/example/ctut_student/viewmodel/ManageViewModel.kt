@@ -65,9 +65,6 @@ class  UserManageViewModel @Inject constructor(
     private val _createCourse = MutableStateFlow<Resource<Course>>(Resource.Unspecified())
     val createCourse: Flow<Resource<Course>> = _createCourse
 
-
-    private val _validation = Channel<RegisterFieldsState> ()
-
     init {
         fetchAllUsers()
         getUser()
@@ -321,8 +318,3 @@ class  UserManageViewModel @Inject constructor(
         }
     }
 }
-internal data class PagingInfo(
-    var userPage: Long = 1,
-    var oldUser: List<User> = emptyList(),
-    var isPagingEnd: Boolean = false
-)

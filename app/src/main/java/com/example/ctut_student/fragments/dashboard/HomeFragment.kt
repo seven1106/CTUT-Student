@@ -55,7 +55,10 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
     private fun showUserInformation(data: User) {
         binding.apply {
-            Glide.with(this@HomeFragment).load(data.imagePath).error(ColorDrawable(Color.BLACK)).into(ivUser)
+            if (data.imagePath !== "") {
+                Glide.with(this@HomeFragment).load(data.imagePath).into(ivUser)
+            }else{
+            }
             tvUserName.setText(data.lastName+" "+data.firstName)
 
         }

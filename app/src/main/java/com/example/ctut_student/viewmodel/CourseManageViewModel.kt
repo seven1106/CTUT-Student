@@ -17,6 +17,7 @@ import com.example.ctut_student.CTUTApplication
 import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.Lesson
 import com.example.ctut_student.data.Notification
+import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,6 +26,7 @@ import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -52,9 +54,35 @@ class CourseManageViewModel @Inject constructor(
     private val _lesson = MutableStateFlow<Resource<Lesson>>(Resource.Unspecified())
     val lesson: StateFlow<Resource<Lesson>> = _lesson
 
+    private val auth = FirebaseAuth.getInstance()
+    private val _user = MutableStateFlow<Resource<User>>(Resource.Unspecified())
+    val user = _user.asStateFlow()
+
 
     init {
         fetchAllCourse()
+        getUser()
+    }
+    private fun getUser() {
+        viewModelScope.launch {
+            _user.emit(Resource.Loading())
+        }
+        firestore.collection("user").document(auth.uid!!)
+
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    viewModelScope.launch {
+                        _user.emit(Resource.Error(error.message.toString()))
+                    }
+                } else {
+                    val user = value?.toObject(User::class.java)
+                    user?.let {
+                        viewModelScope.launch {
+                            _user.emit(Resource.Success(user))
+                        }
+                    }
+                }
+            }
     }
 
     fun fetchAllCourse() {

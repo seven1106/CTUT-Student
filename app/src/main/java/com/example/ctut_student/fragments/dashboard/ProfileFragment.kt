@@ -13,8 +13,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import br.com.simplepass.loadingbutton.BuildConfig
 import com.bumptech.glide.Glide
+import com.example.ctut_student.R
 import com.example.ctut_student.activities.LoginRegisterActivity
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.FragmentProfileBinding
@@ -54,6 +56,9 @@ class ProfileFragment:Fragment(){
                 val intent = Intent(requireActivity(), LoginRegisterActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
+            }
+            binding.constraintProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_studentAccountFragment)
             }
         }
         lifecycleScope.launchWhenStarted {
