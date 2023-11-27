@@ -44,6 +44,7 @@
         <EditText
             android:id="@+id/edTitle"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="45dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/white_background"
@@ -61,6 +62,7 @@
             android:id="@+id/edBody"
             android:layout_width="0dp"
             android:layout_height="450dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"

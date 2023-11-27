@@ -58,6 +58,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
+            android:textColor="@android:color/black"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
@@ -73,6 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="20dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -87,6 +89,7 @@
         <EditText
             android:id="@+id/edCourseId"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="45dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/white_background"
@@ -103,6 +106,7 @@
         <EditText
             android:id="@+id/edCourseName"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
@@ -116,6 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edCourseId" />
         <EditText
             android:id="@+id/edLecName"
+            android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:textStyle="bold"
@@ -134,6 +139,7 @@
             android:id="@+id/edDepartment"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -151,6 +157,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
+            android:textColor="@android:color/black"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"

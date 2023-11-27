@@ -68,6 +68,7 @@
             android:hint="@string/last_name"
             android:singleLine="true"
             android:textStyle="bold"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toStartOf="@+id/edFirstName"
             app:layout_constraintStart_toStartOf="@+id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/imageUser" />
@@ -77,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -95,17 +97,37 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
+            android:textColor="@android:color/black"
             android:gravity="center"
             android:hint="@string/email"
-            android:textStyle="bold"
             android:singleLine="true"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edId" />
+
+        <EditText
+            android:id="@+id/edId"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/id"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edFirstName" />
 
         <EditText
             android:id="@+id/edPassword"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:inputType="textPassword"
@@ -124,6 +146,7 @@
             android:layout_height="45dp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
+            android:textColor="@android:color/black"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
@@ -138,12 +161,12 @@
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
             android:hint="@string/phone_number"
             android:singleLine="true"
-            android:textColor="@color/g_gray700"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edDoB" />
@@ -153,6 +176,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
             android:hint="@string/specialty"
@@ -164,11 +188,30 @@
             app:layout_constraintTop_toBottomOf="@+id/edAddress" />
 
         <EditText
+            android:id="@+id/edAcaYear"
+            android:layout_width="0dp"
+            android:textColor="@android:color/black"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/white_background"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:hint="@string/academicYear"
+
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edSpecialty" />
+
+        <EditText
             android:id="@+id/edDoB"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
             android:hint="@string/day_of_birth"
@@ -176,7 +219,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edSpecialty" />
+            app:layout_constraintTop_toBottomOf="@+id/edAcaYear" />
 
         <TextView
             android:id="@+id/tvGender"
