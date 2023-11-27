@@ -13,7 +13,6 @@ import com.example.ctut_student.data.Classroom
 import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Constants
-import com.example.ctut_student.util.RegisterFieldsState
 import com.example.ctut_student.util.RegisterValidation
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.util.validateEmail
@@ -22,22 +21,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
-import java.util.UUID
 import javax.inject.Inject
 
 
 @HiltViewModel
-class  UserManageViewModel @Inject constructor(
+class  ManageViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
     private val storage: StorageReference,

@@ -1,9 +1,11 @@
 package com.example.ctut_student.fragments.management
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +17,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ctut_student.R
+import com.example.ctut_student.activities.LoginRegisterActivity
 import com.example.ctut_student.adapters.ClassroomAdapter
-import com.example.ctut_student.adapters.UserAdapter
 import com.example.ctut_student.databinding.FragmentClassManageBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
-import com.example.ctut_student.viewmodel.CourseManageViewModel
-import com.example.ctut_student.viewmodel.UserManageViewModel
+import com.example.ctut_student.viewmodel.ManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -30,6 +31,9 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
     private lateinit var binding: FragmentClassManageBinding
     private lateinit var classroomAdapter: ClassroomAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
+    private val uviewModel by viewModels<ManageViewModel>()
+    private lateinit var sf: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,6 +51,16 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
         super.onViewCreated(view, savedInstanceState)
         setUpClassroomRv()
 
+        sf = requireActivity().getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+        editor = sf.edit()
+        binding.ivLogout.setOnClickListener {
+            uviewModel.logout()
+            editor.clear()
+            editor.apply()
+            val intent = Intent(requireActivity(), LoginRegisterActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
 
         binding.edSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

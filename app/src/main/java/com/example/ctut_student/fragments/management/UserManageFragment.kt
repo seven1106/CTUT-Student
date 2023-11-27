@@ -28,7 +28,7 @@ import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.EditStudentDialogBinding
 import com.example.ctut_student.databinding.FragmentUserManageBinding
 import com.example.ctut_student.util.Resource
-import com.example.ctut_student.viewmodel.UserManageViewModel
+import com.example.ctut_student.viewmodel.ManageViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +41,7 @@ private val TAG = "UMFragment"
 class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
     private lateinit var binding: FragmentUserManageBinding
     private lateinit var userAdapter: UserAdapter
-    private val viewModel by viewModels<UserManageViewModel>()
+    private val viewModel by viewModels<ManageViewModel>()
     private lateinit var imageActivityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var sf: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -95,10 +95,8 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
 
         binding.edSearch.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                // Handle the Enter key press here
                 val searchTxt = binding.edSearch.text.toString().trim()
                 if (searchTxt.isNotEmpty()) {
-                    // Call your ViewModel method to perform the search
                     viewModel.searchItemFirebase(searchTxt)
                 }
                 return@setOnKeyListener true

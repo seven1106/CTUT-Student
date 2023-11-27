@@ -1,6 +1,5 @@
 package com.example.ctut_student.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.LinearLayout
@@ -18,10 +17,8 @@ import com.example.ctut_student.databinding.ActivityManageBinding
 import com.example.ctut_student.databinding.AddClassromDialogBinding
 import com.example.ctut_student.databinding.AddStudentDialogBinding
 import com.example.ctut_student.databinding.FragmentAddCourseBinding
-import com.example.ctut_student.fragments.management.ClassManageFragment
 import com.example.ctut_student.util.Resource
-import com.example.ctut_student.viewmodel.ClassroomManageViewModel
-import com.example.ctut_student.viewmodel.UserManageViewModel
+import com.example.ctut_student.viewmodel.ManageViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +29,7 @@ class ManageActivity : AppCompatActivity() {
     private lateinit var btnAddStudent: LinearLayout
     private lateinit var btnAddClassroom: LinearLayout
     private lateinit var btnAddCouseL: LinearLayout
-    private val viewModel by viewModels<UserManageViewModel>()
+    private val viewModel by viewModels<ManageViewModel>()
 
     private val binding by lazy {
         ActivityManageBinding.inflate(layoutInflater)

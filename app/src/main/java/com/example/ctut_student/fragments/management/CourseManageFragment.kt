@@ -1,5 +1,8 @@
 package com.example.ctut_student.fragments.management
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,10 +18,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ctut_student.R
+import com.example.ctut_student.activities.LoginRegisterActivity
 import com.example.ctut_student.adapters.CourseAdapter
 import com.example.ctut_student.databinding.FragmentCourseManageBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.CourseManageViewModel
+import com.example.ctut_student.viewmodel.ManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -27,6 +32,9 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
     private lateinit var binding: FragmentCourseManageBinding
     private lateinit var courseAdapter: CourseAdapter
     private val viewModel by viewModels<CourseManageViewModel>()
+    private val uviewModel by viewModels<ManageViewModel>()
+    private lateinit var sf: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +46,19 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setUpCourseRv()
+
+        sf = requireActivity().getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+        editor = sf.edit()
+        binding.ivLogout.setOnClickListener {
+            uviewModel.logout()
+            editor.clear()
+            editor.apply()
+            val intent = Intent(requireActivity(), LoginRegisterActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
 
         binding.edSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -3,7 +3,6 @@ package com.example.ctut_student.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.example.ctut_student.R
 import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.UserRvItemBinding
-import com.example.ctut_student.viewmodel.UserManageViewModel
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     inner class UserViewHolder(private val binding: UserRvItemBinding) :

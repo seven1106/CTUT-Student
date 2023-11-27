@@ -24,20 +24,20 @@
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/btn_add_bg"
-        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="0.5"
         app:layout_constraintBottom_toBottomOf="@+id/ManageHostFragment"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
         app:srcCompat="@drawable/baseline_add_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomManageNav"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:background="@drawable/bottom_navigation_background"
         app:elevation="0dp"
         app:itemIconTint="@drawable/bottom_nav_item_background"
@@ -49,6 +49,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_manage_nav_menu" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
