@@ -6,7 +6,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +77,36 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUserRv()
+
+        binding.edSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchTxt = s.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+        binding.edSearch.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                // Handle the Enter key press here
+                val searchTxt = binding.edSearch.text.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    // Call your ViewModel method to perform the search
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
+
+
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchAllUsers()
         }
@@ -108,7 +140,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
 
                     is Resource.Error -> {
                         Log.e(TAG, it.message.toString())
-                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                        binding.UserManageProgressbar.visibility = View.INVISIBLE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
 
@@ -131,7 +163,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
 
                     is Resource.Error -> {
                         Log.e(TAG, it.message.toString())
-                        binding.UserManageProgressbar.visibility = View.VISIBLE
+                        binding.UserManageProgressbar.visibility = View.INVISIBLE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
 
@@ -173,6 +205,9 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             edAddress.text = Editable.Factory.getInstance().newEditable(user?.address)
             edDoB.text = Editable.Factory.getInstance().newEditable(user?.dayOfBirth.toString())
             edSpecialty.text = Editable.Factory.getInstance().newEditable(user?.specialty)
+            edId.text = Editable.Factory.getInstance().newEditable(user?.userId)
+            edAcaYear.text = Editable.Factory.getInstance().newEditable(user?.acdermicYear)
+            edClassId.text = Editable.Factory.getInstance().newEditable(user?.classId)
             if (user?.imagePath !== "") {
                 Glide.with(this@UserManageFragment).load(user?.imagePath).into(ivUser)
             }
@@ -227,11 +262,14 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
                     email = edEmail.text.toString().trim(),
                     role = "student",
                     gender = gender,
+                    classId = edClassId.text.toString().trim(),
+                    acdermicYear = edAcaYear.text.toString().trim(),
                     address = edAddress.text.toString().trim(),
                     phoneNumber = edPhone.text.toString().trim(),
                     dayOfBirth = edDoB.text.toString().trim(),
                     specialty = edSpecialty.text.toString().trim(),
-                    id = user?.id.toString()
+                    id = user?.id.toString(),
+                    userId = edId.text.toString().trim(),
                 )
                 viewModel.updateUser(userEdit, imageUri)
 

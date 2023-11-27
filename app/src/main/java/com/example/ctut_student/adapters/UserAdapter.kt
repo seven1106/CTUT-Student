@@ -21,8 +21,13 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         fun bind(user: User) {
             binding.apply {
                 tvUserName.text = "${user.lastName} ${user.firstName}"
-                tvUserClassroom.text = user.email
-                tvUserId.text = user.specialty
+                tvUserId.text = user.userId
+                if (user.classId == "") {
+                    tvClassId.text = "No class"
+                } else {
+                    tvClassId.text = user.classId
+                }
+                tvAcademicYear.text = user.acdermicYear
                 if (user.imagePath !== "") {
                     Glide.with(itemView).load(user.imagePath).into(ivUserAvt)
                 }
