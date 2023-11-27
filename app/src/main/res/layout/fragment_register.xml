@@ -43,6 +43,8 @@
 
         <EditText
             android:id="@+id/edFirstNameRegister"
+            android:textColor="@android:color/black"
+
             android:layout_width="0dp"
             android:layout_height="@dimen/edittextHeight"
             app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
@@ -54,6 +56,7 @@
 
         <EditText
             android:id="@+id/edLastNameRegister"
+            android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="@dimen/edittextHeight"
             app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
@@ -66,6 +69,7 @@
         <EditText
             android:id="@+id/edEmailRegister"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="@dimen/edittextHeight"
             app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
             app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"
@@ -77,6 +81,7 @@
 
         <EditText
             android:id="@+id/edPasswordRegister"
+            android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="@dimen/edittextHeight"
             app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
@@ -86,29 +91,32 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:layout_marginTop="10dp"/>
-<!--        <CheckBox-->
-<!--            android:id="@id/cbAdminRegister"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"-->
-<!--            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/edPasswordRegister"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="Admin"-->
-<!--            android:layout_marginBottom="10dp"/>-->
 
+
+        <CheckBox
+            android:id="@id/cbAdminRegister"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="Admin"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
+            app:layout_constraintTop_toBottomOf="@id/edPasswordRegister" />
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonRegisterRegister"
+            style="@style/blueButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/mediumButtonHeight"
-            style="@style/blueButtonStyle"
-            app:layout_constraintTop_toBottomOf="@id/edPasswordRegister"
-            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
-            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:text="Register"
-            app:spinning_bar_color="@color/white"/>
+            app:layout_constraintEnd_toEndOf="@id/guidelineRegisterRight"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guidelineRegisterLeft"
+            app:layout_constraintTop_toBottomOf="@+id/cbAdminRegister"
+            app:spinning_bar_color="@color/white" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineRegisterLeft"
             android:layout_width="wrap_content"

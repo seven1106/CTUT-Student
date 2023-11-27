@@ -57,6 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
+            android:textColor="@android:color/black"
             android:layout_marginEnd="8dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -72,6 +73,7 @@
             android:id="@+id/edPTheory"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/white_background"
@@ -87,6 +89,7 @@
         <EditText
             android:id="@+id/edCourseId"
             android:layout_width="0dp"
+            android:textColor="@android:color/black"
             android:layout_height="45dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/white_background"
@@ -104,6 +107,7 @@
             android:id="@+id/edCourseName"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -118,6 +122,7 @@
             android:id="@+id/edLecName"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
@@ -134,6 +139,7 @@
             android:id="@+id/edDepartment"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -150,6 +156,7 @@
             android:id="@+id/edLEmail"
             android:layout_width="0dp"
             android:layout_height="45dp"
+            android:textColor="@android:color/black"
             android:layout_marginTop="20dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
@@ -177,10 +184,9 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edTTheory"
-            app:layout_constraintVertical_bias="1.0" />
+             />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftGuideline"
