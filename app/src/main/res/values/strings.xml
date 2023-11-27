@@ -66,4 +66,5 @@
     <string name="ctut">CTUT</string>
     <string name="contact">Contact</string>
     <string name="change_password">Change password</string>
+    <string name="id">Student ID</string>
 </resources>

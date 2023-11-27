@@ -18,9 +18,10 @@ data class User(
     val scores: Map<String, String> = emptyMap(),
     val classId: String = "",
     var id: String = "",
+    var userId: String = "",
+    var acdermicYear: String = ""
     ) : Parcelable {
-    constructor() : this("", "", "", "", "", "", "", "", "", "",  emptyMap(), "", ""
-    )
+    constructor() : this("", "", "", "", "", "", "", "", "", "", emptyMap(), "", "", "", "")
 
 
     override fun describeContents(): Int {

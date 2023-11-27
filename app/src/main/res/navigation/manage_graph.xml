@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/notiManageFragment"
-        android:name="com.example.ctut_student.fragments.management.NotiManageFragment"
+        android:name="com.example.ctut_student.fragments.management.SearchManageFragment"
         android:label="NotiManageFragment"
         tools:layout="@layout/fragment_noti_manage"/>
     <fragment

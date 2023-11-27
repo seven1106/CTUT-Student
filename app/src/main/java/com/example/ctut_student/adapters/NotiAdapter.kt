@@ -37,7 +37,6 @@ class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
                                 val userRole =
                                     user.role
                                 if (userRole == "admin") {
-                                    binding.ibDeleteUser.visibility = View.VISIBLE
                                 } else {
                                     binding.ibDeleteUser.visibility = View.INVISIBLE
                                 }
