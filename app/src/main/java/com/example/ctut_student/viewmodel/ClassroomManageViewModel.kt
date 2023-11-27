@@ -52,7 +52,7 @@ class ClassroomManageViewModel @Inject constructor(
         }
 
             firestore.collection("classroom")
-                .orderBy("classId", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .orderBy("classId", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener {
                     val classrooms = it.toObjects(Classroom::class.java)
@@ -123,6 +123,7 @@ class ClassroomManageViewModel @Inject constructor(
             }
         }
     }
+
     fun updateStudentClassId(classId: String, user: User) {
         viewModelScope.launch {
             _upduser.emit(Resource.Loading())
@@ -208,4 +209,20 @@ class ClassroomManageViewModel @Inject constructor(
                 }
             }
     }
+
+    fun searchItemFirebase(searchTxt: String) {
+        viewModelScope.launch { _classrooms.emit(Resource.Loading()) }
+        firestore.collection("classroom")
+            .whereEqualTo("classId", searchTxt).orderBy("className", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener {
+                val classroom = it.toObjects(Classroom::class.java)
+                viewModelScope.launch { _classrooms.emit(Resource.Success(classroom)) }
+
+            }.addOnFailureListener{
+                viewModelScope.launch { _classrooms.emit(Resource.Error(it.message.toString())) }
+            }
+
+    }
+
 }

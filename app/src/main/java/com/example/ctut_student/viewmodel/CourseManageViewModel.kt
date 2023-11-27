@@ -2,18 +2,13 @@ package com.example.ctut_student.viewmodel
 
 import android.app.Application
 import android.app.DownloadManager
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ctut_student.CTUTApplication
 import com.example.ctut_student.data.Course
 import com.example.ctut_student.data.Lesson
 import com.example.ctut_student.data.Notification
@@ -21,6 +16,7 @@ import com.example.ctut_student.data.User
 import com.example.ctut_student.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +24,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +36,12 @@ class CourseManageViewModel @Inject constructor(
 ) : AndroidViewModel(app) {
     private val _course = MutableStateFlow<Resource<List<Course>>>(Resource.Unspecified())
     val course: StateFlow<Resource<List<Course>>> = _course
+
+    private val _delcourse = MutableStateFlow<Resource<Course>>(Resource.Unspecified())
+    val delcourse: StateFlow<Resource<Course>> = _delcourse
+
+    private val _updateInfo = MutableStateFlow<Resource<Course>>(Resource.Unspecified())
+    val updateInfo = _updateInfo.asStateFlow()
 
     private val _noti = MutableStateFlow<Resource<Notification>>(Resource.Unspecified())
     val noti: StateFlow<Resource<Notification>> = _noti
@@ -126,7 +127,7 @@ class CourseManageViewModel @Inject constructor(
             }
     }
 
-    fun featchNoti(classId: String, courseName: String) {
+    fun fetchNoti(classId: String, courseName: String) {
         viewModelScope.launch {
             _fnoti.emit(Resource.Loading())
         }
@@ -136,12 +137,10 @@ class CourseManageViewModel @Inject constructor(
                 val notifications = it.toObjects(Notification::class.java)
                 viewModelScope.launch {
                     _fnoti.emit(Resource.Success(notifications))
-                    Log.i("TAGnoti", notifications.toString())
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _fnoti.emit(Resource.Error(it.message.toString()))
-                    Log.i("TAGnotif", it.message.toString())
 
                 }
             }
@@ -173,7 +172,7 @@ class CourseManageViewModel @Inject constructor(
     }
 
 
-    fun featchLesson(classId: String, courseName: String) {
+    fun fetchLesson(classId: String, courseName: String) {
         viewModelScope.launch {
             _flesson.emit(Resource.Loading())
         }
@@ -249,10 +248,8 @@ class CourseManageViewModel @Inject constructor(
         val storageReference = FirebaseStorage.getInstance().getReference("course/$lesson.courseName/$lesson.lessonName.pdf")
 
         storageReference.delete().addOnSuccessListener {
-            // File deleted successfully
             Toast.makeText(getApplication(), "PDF deleted", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
-            // Handle any errors that may occur during the deletion process
             Toast.makeText(getApplication(), "Deletion failed: ${it.message}", Toast.LENGTH_SHORT).show()
         }
         firestore.collection("lesson")
@@ -277,27 +274,27 @@ class CourseManageViewModel @Inject constructor(
 
     fun editCourseInfo(course: Course) {
         viewModelScope.launch {
-            _course.emit(Resource.Loading())
+            _updateInfo.emit(Resource.Loading())
         }
         firestore.collection("course")
             .document(course.courseName)
             .set(course)
             .addOnSuccessListener {
                 viewModelScope.launch {
-                    _course.emit(Resource.Success(listOf(course)))
+                    _updateInfo.emit(Resource.Success(course))
                     Toast.makeText(getApplication(), "Success", Toast.LENGTH_SHORT)
                         .show()
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
-                    _course.emit(Resource.Error(it.message.toString()))
+                    _updateInfo.emit(Resource.Error(it.message.toString()))
                 }
             }
     }
 
     fun deleteCourse(course: Course) {
         viewModelScope.launch {
-            _course.emit(Resource.Loading())
+            _delcourse.emit(Resource.Loading())
         }
         firestore.collection("course")
             .whereEqualTo("courseName", course.courseName)
@@ -307,16 +304,31 @@ class CourseManageViewModel @Inject constructor(
                     document.reference.delete()
                 }
                 viewModelScope.launch {
-                    _course.emit(Resource.Success(listOf(course)))
+                    _delcourse.emit(Resource.Success((course)))
                     Toast.makeText(getApplication(), "Success", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
             .addOnFailureListener { exception ->
                 viewModelScope.launch {
-                    _course.emit(Resource.Error(exception.message.toString()))
+                    _delcourse.emit(Resource.Error(exception.message.toString()))
                 }
             }
+    }
+
+    fun searchItemFirebase(searchTxt: String) {
+        viewModelScope.launch { _course.emit(Resource.Loading()) }
+        firestore.collection("course")
+            .whereEqualTo("courseName", searchTxt).orderBy("courseName", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener {
+                val course = it.toObjects(Course::class.java)
+                viewModelScope.launch { _course.emit(Resource.Success(course)) }
+
+            }.addOnFailureListener{
+                viewModelScope.launch { _course.emit(Resource.Error(it.message.toString())) }
+            }
+
     }
 
 }

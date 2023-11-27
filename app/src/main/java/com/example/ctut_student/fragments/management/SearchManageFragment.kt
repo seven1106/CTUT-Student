@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.ctut_student.R
 import com.example.ctut_student.databinding.FragmentNotiManageBinding
 
-class NotiManageFragment : Fragment(R.layout.fragment_noti_manage) {
+class SearchManageFragment : Fragment(R.layout.fragment_noti_manage) {
     private lateinit var binding: FragmentNotiManageBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,10 +18,4 @@ class NotiManageFragment : Fragment(R.layout.fragment_noti_manage) {
         binding = FragmentNotiManageBinding.inflate(inflater)
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-
 }

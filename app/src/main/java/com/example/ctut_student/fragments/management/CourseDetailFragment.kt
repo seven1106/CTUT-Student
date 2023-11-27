@@ -80,8 +80,8 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val course = args.course
-        viewModel.featchNoti(course.classId, course.courseName)
-        viewModel.featchLesson(course.classId, course.courseName)
+        viewModel.fetchNoti(course.classId, course.courseName)
+        viewModel.fetchLesson(course.classId, course.courseName)
         setUpNotiRv()
         setUpLessonRv()
 
@@ -105,21 +105,20 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
                         user?.let {
                             val userRole =
                                 user.role
-                            if (userRole == "admin") {
-                                llAddNoti.visibility = View.VISIBLE
-                                btnEditCourseInfo.visibility = View.VISIBLE
-                            } else {
+                            if (userRole == "student") {
                                 llAddNoti.visibility = View.GONE
                                 btnEditCourseInfo.visibility = View.GONE
+                            } else {
+
                             }
                         }
                     }
                 }
             btnRefresh.setOnClickListener {
-                viewModel.featchNoti(course.classId, course.courseName)
+                viewModel.fetchNoti(course.classId, course.courseName)
             }
             btnRefresh1.setOnClickListener {
-                viewModel.featchLesson(course.classId, course.courseName)
+                viewModel.fetchLesson(course.classId, course.courseName)
             }
             btnEditCourseInfo.setOnClickListener {
                 showEditCourseInfoDialog()
@@ -289,7 +288,7 @@ notiAdapter.startListening()
                                 "Notification added",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            viewModel.featchLesson(args.course.classId, args.course.courseName)
+                            viewModel.fetchLesson(args.course.classId, args.course.courseName)
 
                         }
 
@@ -348,7 +347,7 @@ notiAdapter.startListening()
                                 "Notification added",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            viewModel.featchNoti(args.course.classId, args.course.courseName)
+                            viewModel.fetchNoti(args.course.classId, args.course.courseName)
                         }
 
                         is Resource.Error -> {

@@ -1,6 +1,10 @@
 package com.example.ctut_student.fragments.management
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +21,7 @@ import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.CourseManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+
 @AndroidEntryPoint
 class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
     private lateinit var binding: FragmentCourseManageBinding
@@ -34,12 +39,43 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpCourseRv()
+
+        binding.edSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchTxt = s.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+        binding.edSearch.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val searchTxt = binding.edSearch.text.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
+
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchAllCourse()
         }
         courseAdapter.onClick = {
             val b = Bundle().apply { putParcelable("course", it) }
-            findNavController().navigate(R.id.action_courseManageFragment_to_courseDetailFragment, b)
+            findNavController().navigate(
+                R.id.action_courseManageFragment_to_courseDetailFragment,
+                b
+            )
 
         }
         courseAdapter.onClickDelete = {
@@ -69,6 +105,55 @@ class CourseManageFragment : Fragment(R.layout.fragment_course_manage) {
                     is Resource.Error -> {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.updateInfo.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), "Update successfully", Toast.LENGTH_SHORT)
+                            .show()
+                        viewModel.fetchAllCourse()
+                    }
+
+                    is Resource.Error -> {
+                        binding.progressBar.visibility = View.INVISIBLE
+
+                        Log.e("TAGGGG", it.message.toString())
+
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
+
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.delcourse.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        binding.progressBar.visibility = View.INVISIBLE
+                        viewModel.fetchAllCourse()
+                    }
+
+                    is Resource.Error -> {
+                        binding.progressBar.visibility = View.INVISIBLE
+            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
 
                     else -> Unit

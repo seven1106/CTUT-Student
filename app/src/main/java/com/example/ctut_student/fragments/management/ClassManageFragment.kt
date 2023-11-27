@@ -1,7 +1,10 @@
 package com.example.ctut_student.fragments.management
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,8 @@ import com.example.ctut_student.adapters.UserAdapter
 import com.example.ctut_student.databinding.FragmentClassManageBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClassroomManageViewModel
+import com.example.ctut_student.viewmodel.CourseManageViewModel
+import com.example.ctut_student.viewmodel.UserManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,6 +30,7 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
     private lateinit var binding: FragmentClassManageBinding
     private lateinit var classroomAdapter: ClassroomAdapter
     private val viewModel by viewModels<ClassroomManageViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -32,9 +38,42 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchAllClass()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpClassroomRv()
+
+
+        binding.edSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchTxt = s.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+        binding.edSearch.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val searchTxt = binding.edSearch.text.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
+
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchAllClass()
         }
@@ -87,7 +126,6 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
                     is Resource.Success -> {
                         binding.ClassManageProgressbar.visibility = View.GONE
                         classroomAdapter.differ.submitList(it.data)
-                        Log.i("TAGclass", it.data.toString())
                     }
 
                     is Resource.Error -> {
@@ -103,4 +141,6 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
 
 
     }
+
+
 }

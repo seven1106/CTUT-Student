@@ -1,6 +1,9 @@
 package com.example.ctut_student.fragments.dashboard
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +39,35 @@ class ElearningFragment:Fragment(R.layout.fragment_elearning){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpCourseRv()
+
+
+        binding.edSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchTxt = s.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+        binding.edSearch.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val searchTxt = binding.edSearch.text.toString().trim()
+                if (searchTxt.isNotEmpty()) {
+                    viewModel.searchItemFirebase(searchTxt)
+                }
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
+
+
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchCourse()
         }

@@ -38,10 +38,9 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
                         user?.let {
                             val userRole =
                                 user.role
-                            if (userRole == "admin") {
-                                binding.ibDeleteUser.visibility = View.VISIBLE
+                            if (userRole == "student") {
+                                binding.ibDeleteUser.visibility = View.INVISIBLE
                             } else {
-                                    binding.ibDeleteUser.visibility = View.INVISIBLE
                             }
                         }
                     }

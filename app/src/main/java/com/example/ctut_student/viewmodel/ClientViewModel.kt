@@ -16,6 +16,7 @@ import com.example.ctut_student.util.Resource
 import com.example.ctut_student.util.validateEmail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -191,6 +192,21 @@ class  ClientViewModel @Inject constructor(
                 Log.i("fata", it.message.toString())
             }
         }
+    }
+
+    fun searchItemFirebase(searchTxt: String) {
+        viewModelScope.launch { _courses.emit(Resource.Loading()) }
+        firestore.collection("course")
+            .whereEqualTo("courseName", searchTxt).orderBy("courseName", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener {
+                val course = it.toObjects(Course::class.java)
+                viewModelScope.launch { _courses.emit(Resource.Success(course)) }
+
+            }.addOnFailureListener{
+                viewModelScope.launch { _courses.emit(Resource.Error(it.message.toString())) }
+            }
+
     }
 
 }
