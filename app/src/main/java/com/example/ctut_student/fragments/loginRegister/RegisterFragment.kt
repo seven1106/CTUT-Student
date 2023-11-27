@@ -51,12 +51,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             tvDoYouHaveAccount.paintFlags = binding.tvDoYouHaveAccount.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
             buttonRegisterRegister.setOnClickListener {
+                val admin = "Student"
+                if (cbAdminRegister.isChecked) {
+                    admin == "Admin"
+                }else{
+                    admin == "Student"
+                }
                 val user = User(
                     edFirstNameRegister.text.toString().trim(),
                     edLastNameRegister.text.toString().trim(),
                     edEmailRegister.text.toString().trim(),
-                    role = "student",
-
+                    role = admin,
                 )
                 val password = edPasswordRegister.text.toString()
                 viewModel.createAccountWithEmailAndPassword(user, password)

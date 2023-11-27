@@ -101,18 +101,14 @@ class  UserManageViewModel @Inject constructor(
         firestore.collection("user").orderBy("firstName", Query.Direction.ASCENDING).get()
             .addOnSuccessListener {
                 val users = it.toObjects(User::class.java)
-                Log.i("TAGfetch", it.toString())
                 viewModelScope.launch {
-
                     _users.emit(Resource.Success(users))
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
-                    Log.i("TAGfetch", it.message.toString())
                     _users.emit(Resource.Error(it.message.toString()))
                 }
             }
-
     }
     fun createAccountWithEmailAndPassword(user: User, password: String, ) {
         val areInputsValid = validateEmail(user.email) is RegisterValidation.Success
@@ -151,7 +147,7 @@ class  UserManageViewModel @Inject constructor(
             .set(user)
             .addOnSuccessListener {
                 _register.value = Resource.Success(user)
-                fetchAllUsers()
+                _users.value = Resource.Success(listOf(user))
             }.addOnFailureListener {
                 _register.value = Resource.Error(it.message.toString())
             }
@@ -183,6 +179,7 @@ class  UserManageViewModel @Inject constructor(
                 _createClass.value = Resource.Error(it.message.toString())
             }
     }
+
 
     fun createNewCourse(courseName: String, course: Course) {
         val areInputsValid = validateEmail(course.lecturerEmail) is RegisterValidation.Success
@@ -316,5 +313,20 @@ class  UserManageViewModel @Inject constructor(
                 Log.i("fata", it.message.toString())
             }
         }
+    }
+
+    fun searchItemFirebase(searchTxt: String) {
+        viewModelScope.launch { _users.emit(Resource.Loading()) }
+        firestore.collection("user")
+            .whereEqualTo("firstName", searchTxt).orderBy("firstName", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener {
+                    val user = it.toObjects(User::class.java)
+                    viewModelScope.launch { _users.emit(Resource.Success(user)) }
+
+            }.addOnFailureListener{
+                viewModelScope.launch { _users.emit(Resource.Error(it.message.toString())) }
+            }
+
     }
 }
