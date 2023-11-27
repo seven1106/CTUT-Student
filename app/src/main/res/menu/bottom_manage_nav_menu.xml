@@ -8,6 +8,12 @@
         android:id="@+id/classManageFragment"
         android:icon="@drawable/ic_classroom"
         android:title="@string/classManage" />
+
+    <item
+        android:id="@+id/addButton"
+        android:icon="@color/g_white"
+        android:title="addButton" />
+
     <item
         android:id="@+id/courseManageFragment"
         android:icon="@drawable/ic_elearning"

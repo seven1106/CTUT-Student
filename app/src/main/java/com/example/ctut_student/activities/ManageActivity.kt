@@ -45,10 +45,6 @@ class ManageActivity : AppCompatActivity() {
             onPause()
             showBtnAddDialog()
         }
-
-
-
-
     }
 
     override fun onResume() {

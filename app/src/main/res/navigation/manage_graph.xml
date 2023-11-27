@@ -68,4 +68,5 @@
             android:name="course"
             app:argType="com.example.ctut_student.data.Course" />
     </fragment>
+    <fragment android:id="@+id/addButton" />
 </navigation>

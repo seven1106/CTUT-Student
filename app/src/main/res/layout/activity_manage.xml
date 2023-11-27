@@ -24,14 +24,14 @@
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/btn_add_bg"
+        android:elevation="100dp"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="0.5"
-        app:layout_constraintBottom_toBottomOf="@+id/ManageHostFragment"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/baseline_add_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/bottom_navigation_background"
-        app:elevation="0dp"
+        android:elevation="80dp"
         app:itemIconTint="@drawable/bottom_nav_item_background"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="10dp"
@@ -47,6 +47,7 @@
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_manage_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
