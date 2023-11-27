@@ -1,5 +1,6 @@
 package com.example.ctut_student.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.LinearLayout
@@ -17,7 +18,9 @@ import com.example.ctut_student.databinding.ActivityManageBinding
 import com.example.ctut_student.databinding.AddClassromDialogBinding
 import com.example.ctut_student.databinding.AddStudentDialogBinding
 import com.example.ctut_student.databinding.FragmentAddCourseBinding
+import com.example.ctut_student.fragments.management.ClassManageFragment
 import com.example.ctut_student.util.Resource
+import com.example.ctut_student.viewmodel.ClassroomManageViewModel
 import com.example.ctut_student.viewmodel.UserManageViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -30,6 +33,7 @@ class ManageActivity : AppCompatActivity() {
     private lateinit var btnAddClassroom: LinearLayout
     private lateinit var btnAddCouseL: LinearLayout
     private val viewModel by viewModels<UserManageViewModel>()
+
     private val binding by lazy {
         ActivityManageBinding.inflate(layoutInflater)
     }
@@ -117,6 +121,9 @@ class ManageActivity : AppCompatActivity() {
                                     edTTheory.text.clear()
                                 }
                                 binding.btnAddCourse.revertAnimation()
+                                dialog.dismiss()
+                                val navController = findNavController(R.id.ManageHostFragment)
+                                navController.navigate(R.id.courseManageFragment)
                             }
 
                             is Resource.Error -> {
@@ -179,7 +186,9 @@ class ManageActivity : AppCompatActivity() {
                                     edAcaYear.text.clear()
                                 }
                                 binding.btnCreateNewClassroom.revertAnimation()
-
+                                dialog.dismiss()
+                                val navController = findNavController(R.id.ManageHostFragment)
+                                navController.navigate(R.id.classManageFragment)
                             }
 
                             is Resource.Error -> {
@@ -223,11 +232,12 @@ class ManageActivity : AppCompatActivity() {
                         gender,
                         edPhone.text.toString().trim(),
                         edDoB.text.toString().trim(),
-                        edSpecialty.text.toString().trim()
+                        edSpecialty.text.toString().trim(),
+                        userId = edId.text.toString().trim(),
+                        acdermicYear = edAcaYear.text.toString().trim(),
                     )
                     val password = edPassword.text.toString().trim()
                     viewModel.createAccountWithEmailAndPassword(user, password)
-                onResume()
                 lifecycleScope.launchWhenStarted {
                         viewModel.register.collectLatest {
                             when (it) {
@@ -240,7 +250,6 @@ class ManageActivity : AppCompatActivity() {
                                         applicationContext,
                                         "Student account created",
                                         Toast.LENGTH_SHORT
-
                                     )
                                         .show()
                                     binding.apply {
@@ -252,14 +261,14 @@ class ManageActivity : AppCompatActivity() {
                                         edDoB.text.clear()
                                         edSpecialty.text.clear()
                                         edPassword.text.clear()
+                                        edId.text.clear()
+                                        edAcaYear.text.clear()
                                     }
                                     binding.btnSaveEditStudent.revertAnimation()
                                 }
 
                                 is Resource.Error -> {
-
                                     binding.btnSaveEditStudent.revertAnimation()
-                                    Log.e("TAGGGG", it.message.toString())
                                 }
 
                                 else -> Unit
