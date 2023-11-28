@@ -72,6 +72,7 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
                     viewModel.searchItemFirebase(searchTxt)
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -108,7 +109,8 @@ class ClassManageFragment : Fragment(R.layout.fragment_class_manage) {
 
                     is Resource.Success -> {
                         binding.ClassManageProgressbar.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Delete successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Delete successfully", Toast.LENGTH_SHORT)
+                            .show()
                         viewModel.fetchAllClass()
                     }
 

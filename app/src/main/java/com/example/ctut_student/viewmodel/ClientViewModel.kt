@@ -15,6 +15,7 @@ import com.example.ctut_student.util.RegisterValidation
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.util.validateEmail
 import com.google.firebase.auth.FirebaseAuth
+import com.example.ctut_student.data.Notification
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.StorageReference
@@ -42,6 +43,9 @@ class  ClientViewModel @Inject constructor(
     private val _courses = MutableStateFlow<Resource<List<Course>>>(Resource.Unspecified())
     val courses: StateFlow<Resource<List<Course>>> = _courses
 
+    private val _fnoti = MutableStateFlow<Resource<List<com.example.ctut_student.data.Notification>>>(Resource.Unspecified())
+    val fnoti: StateFlow<Resource<List<com.example.ctut_student.data.Notification>>> = _fnoti
+
     private val _updateInfo = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val updateInfo = _updateInfo.asStateFlow()
 
@@ -50,6 +54,7 @@ class  ClientViewModel @Inject constructor(
     init {
         getUser()
         fetchCourse()
+        fetchAllNoti()
     }
     private fun getUser() {
         viewModelScope.launch {
@@ -102,7 +107,7 @@ class  ClientViewModel @Inject constructor(
         }
 
         firestore.collection("course").whereEqualTo("classId", user.value.data?.classId)
-            .orderBy("courseName", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .orderBy("courseName", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener {
                 val course = it.toObjects(Course::class.java)
@@ -116,7 +121,28 @@ class  ClientViewModel @Inject constructor(
                     _courses.emit(Resource.Error(it.message.toString()))
                 }
             }
+    }
 
+    fun fetchAllNoti() {
+        viewModelScope.launch {
+            _fnoti.emit(Resource.Loading())
+        }
+        firestore.collection("noti").whereEqualTo("classId", user.value.data?.classId)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener {
+                val notifications = it.toObjects(Notification::class.java)
+
+                Log.i("TAFetch", notifications.toString())
+                viewModelScope.launch {
+                    _fnoti.emit(Resource.Success(notifications))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    Log.i("TAGfetch", it.message.toString())
+                    _fnoti.emit(Resource.Error(it.message.toString()))
+                }
+            }
     }
 
     fun updateUser(user: User, imageUri: Uri?) {

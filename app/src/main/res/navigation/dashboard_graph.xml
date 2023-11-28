@@ -14,7 +14,11 @@
         android:id="@+id/notificationFragment"
         android:name="com.example.ctut_student.fragments.dashboard.NotificationFragment"
         android:label="NotificationFragment"
-        tools:layout="@layout/fragment_notification"/>
+        tools:layout="@layout/fragment_notification">
+        <action
+            android:id="@+id/action_notificationFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/elearningFragment"
         android:name="com.example.ctut_student.fragments.dashboard.ElearningFragment"

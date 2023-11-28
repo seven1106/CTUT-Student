@@ -92,7 +92,7 @@ class CourseManageViewModel @Inject constructor(
         }
 
         firestore.collection("course")
-            .orderBy("department", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .orderBy("department", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 val course = it.toObjects(Course::class.java)
@@ -120,6 +120,8 @@ class CourseManageViewModel @Inject constructor(
                 viewModelScope.launch {
                     _noti.emit(Resource.Success(notification))
                 }
+                Toast.makeText(getApplication(), "Notification added", Toast.LENGTH_SHORT)
+                    .show()
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _noti.emit(Resource.Error(it.message.toString()))
@@ -132,7 +134,9 @@ class CourseManageViewModel @Inject constructor(
             _fnoti.emit(Resource.Loading())
         }
         firestore.collection("noti").whereEqualTo("classId", classId)
+            .orderBy("timestamp", Query.Direction.ASCENDING)
             .whereEqualTo("courseName", courseName).get()
+
             .addOnSuccessListener {
                 val notifications = it.toObjects(Notification::class.java)
                 viewModelScope.launch {
@@ -205,9 +209,12 @@ class CourseManageViewModel @Inject constructor(
                     .document()
                     .set(lesson)
                     .addOnSuccessListener {
+
                         viewModelScope.launch {
                             _lesson.emit(Resource.Success(lesson))
                         }
+                        Toast.makeText(getApplication(), "Lesson added", Toast.LENGTH_SHORT)
+                            .show()
                     }.addOnFailureListener {
                         viewModelScope.launch {
                             _lesson.emit(Resource.Error(it.message.toString()))
@@ -239,19 +246,12 @@ class CourseManageViewModel @Inject constructor(
             Toast.makeText(context, "Download failed: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-
     fun deleteLesson(lesson: Lesson) {
         viewModelScope.launch {
             _lesson.emit(Resource.Loading())
         }
         val storageReference = FirebaseStorage.getInstance().getReference("course/$lesson.courseName/$lesson.lessonName.pdf")
 
-        storageReference.delete().addOnSuccessListener {
-            Toast.makeText(getApplication(), "PDF deleted", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(getApplication(), "Deletion failed: ${it.message}", Toast.LENGTH_SHORT).show()
-        }
         firestore.collection("lesson")
             .whereEqualTo("lessonName", lesson.lessonName)
             .get()
@@ -270,6 +270,11 @@ class CourseManageViewModel @Inject constructor(
                     _lesson.emit(Resource.Error(exception.message.toString()))
                 }
             }
+        storageReference.delete().addOnSuccessListener {
+            Toast.makeText(getApplication(), "PDF deleted", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(getApplication(), "Deletion failed: ${it.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun editCourseInfo(course: Course) {

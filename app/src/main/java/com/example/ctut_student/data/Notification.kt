@@ -5,8 +5,9 @@ data class Notification(
     var body: String,
     val classId: String,
     val courseName: String,
+    val timestamp: Long = System.currentTimeMillis()
 ) {
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "", 0)
 
 }
 

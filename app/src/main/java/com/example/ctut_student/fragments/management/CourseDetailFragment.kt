@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -206,7 +207,6 @@ notiAdapter.startListening()
                     is Resource.Error -> {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        Log.i("TAGclass", it.message.toString())
                     }
 
                     else -> Unit
@@ -241,7 +241,6 @@ notiAdapter.startListening()
                     is Resource.Error -> {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        Log.i("TAGclass", it.message.toString())
                     }
 
                     else -> Unit
@@ -283,11 +282,7 @@ notiAdapter.startListening()
                                 edTitle.text.clear()
                             }
                             binding.btnAddLesson.revertAnimation()
-                            Toast.makeText(
-                                requireContext(),
-                                "Notification added",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
                             viewModel.fetchLesson(args.course.classId, args.course.courseName)
 
                         }
@@ -342,11 +337,6 @@ notiAdapter.startListening()
 
                             }
                             binding.btnAddNoti.revertAnimation()
-                            Toast.makeText(
-                                requireContext(),
-                                "Notification added",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.fetchNoti(args.course.classId, args.course.courseName)
                         }
 
