@@ -16,9 +16,12 @@ import com.example.ctut_student.util.Constants
 import com.example.ctut_student.util.RegisterValidation
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.util.validateEmail
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -313,16 +316,33 @@ class  ManageViewModel @Inject constructor(
 
     fun searchItemFirebase(searchTxt: String) {
         viewModelScope.launch { _users.emit(Resource.Loading()) }
-        firestore.collection("user")
-            .whereEqualTo("firstName", searchTxt).orderBy("firstName", Query.Direction.ASCENDING)
+
+        val t1: Task<QuerySnapshot> = firestore.collection("user")
+            .whereEqualTo("firstName", searchTxt)
+            .orderBy("firstName", Query.Direction.ASCENDING)
             .get()
-            .addOnSuccessListener {
-                    val user = it.toObjects(User::class.java)
-                    viewModelScope.launch { _users.emit(Resource.Success(user)) }
 
-            }.addOnFailureListener{
-                viewModelScope.launch { _users.emit(Resource.Error(it.message.toString())) }
+        val t2: Task<QuerySnapshot> = firestore.collection("user")
+            .whereEqualTo("userId", searchTxt)
+            .orderBy("userId", Query.Direction.ASCENDING)
+            .get()
+
+        try {
+            val allTasks: Task<List<QuerySnapshot>> = Tasks.whenAllSuccess(t1, t2)
+            allTasks.addOnSuccessListener { taskResults ->
+                val userList = mutableListOf<User>()
+
+                for (result in taskResults) {
+                    val user = result.toObjects(User::class.java)
+                    userList.addAll(user)
+                }
+
+                viewModelScope.launch { _users.emit(Resource.Success(userList)) }
+            }.addOnFailureListener { exception ->
+                viewModelScope.launch { _users.emit(Resource.Error(exception.message.toString())) }
             }
-
+        } catch (e: Exception) {
+            viewModelScope.launch { _users.emit(Resource.Error(e.message.toString())) }
+        }
     }
 }

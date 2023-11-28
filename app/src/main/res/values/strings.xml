@@ -67,4 +67,5 @@
     <string name="contact">Contact</string>
     <string name="change_password">Change password</string>
     <string name="id">Student ID</string>
+    <string name="searchby">Search by name or id</string>
 </resources>

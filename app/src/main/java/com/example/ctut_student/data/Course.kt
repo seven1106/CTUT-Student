@@ -11,12 +11,9 @@ class Course(
     var department: String,
     var theoryPeriods: String,
     var practicePeriods: String,
-    val noti: List<Notification> = emptyList(),
-    val lesson: List<Lesson> = emptyList(),
-    val practiceDoc: List<PracticeDoc> = emptyList(),
 
     ): Parcelable {
-        constructor() : this( "", "", "", "", "", "", "", emptyList(), emptyList(), emptyList())
+        constructor() : this( "", "", "", "", "", "", "")
 
     override fun describeContents(): Int {
         TODO("Not yet implemented")

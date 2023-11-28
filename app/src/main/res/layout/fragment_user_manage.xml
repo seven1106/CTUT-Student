@@ -48,7 +48,7 @@
                 android:background="@drawable/white_ed"
                 android:drawableStart="@drawable/ic_search"
                 android:ems="10"
-                android:hint="@string/search"
+                android:hint="@string/searchby"
                 android:inputType="text"
                 android:paddingStart="20dp"
                 android:textStyle="italic"
