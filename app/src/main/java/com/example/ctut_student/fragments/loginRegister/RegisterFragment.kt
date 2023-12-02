@@ -51,11 +51,12 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             tvDoYouHaveAccount.paintFlags = binding.tvDoYouHaveAccount.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
             buttonRegisterRegister.setOnClickListener {
-                val admin = "Student"
+                val admin = "student"
                 if (cbAdminRegister.isChecked) {
-                    admin == "Admin"
+                    admin == "admin"
+                    Toast.makeText(requireContext(), "Admin role", Toast.LENGTH_SHORT).show()
                 }else{
-                    admin == "Student"
+                    admin == "student"
                 }
                 val user = User(
                     edFirstNameRegister.text.toString().trim(),

@@ -34,7 +34,6 @@ class NotificationFragment : Fragment() {
         return binding.root
 
     }
-
     override fun onResume() {
         super.onResume()
         viewModel.fetchAllNoti()
@@ -42,6 +41,10 @@ class NotificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        notiAdapter.onClick = {
+//            findNavController().navigate(R.id.action_notificationFragment_to_courseDetailFragment)
+//        }
 
         setUpNotiRv()
         lifecycleScope.launchWhenStarted {
@@ -72,7 +75,7 @@ class NotificationFragment : Fragment() {
         binding.apply {
             rvNoti.apply {
                 adapter = notiAdapter
-//                setHasFixedSize(true)
+                setHasFixedSize(true)
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 

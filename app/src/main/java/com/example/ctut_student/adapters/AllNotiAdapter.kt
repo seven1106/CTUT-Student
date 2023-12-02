@@ -55,10 +55,6 @@ class AllNotiAdapter: RecyclerView.Adapter<AllNotiAdapter.NotiViewHolder>() {
         holder.itemView.setOnClickListener {
             onClick?.invoke(noti)
         }
-        holder.itemView.findViewById<ImageView>(R.id.ibDeleteUser).setOnClickListener {
-            onClickDelete?.invoke(noti)
-        }
-
     }
 
     override fun getItemCount(): Int {

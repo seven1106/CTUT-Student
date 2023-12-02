@@ -19,6 +19,7 @@ import com.example.ctut_student.util.validateEmail
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -236,6 +237,16 @@ class  ManageViewModel @Inject constructor(
                 }
             }
     }
+
+    fun deleteUserAuth(user: FirebaseUser) {
+        user.delete().addOnSuccessListener {
+            Toast.makeText(getApplication(), "Delete User Success", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(getApplication(), it.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
     fun updateUser(user: User, imageUri: Uri?) {
         val areInputsValid = validateEmail(user.email) is RegisterValidation.Success
                 && user.firstName.trim().isNotEmpty()

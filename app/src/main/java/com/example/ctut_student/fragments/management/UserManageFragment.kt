@@ -122,6 +122,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
         }
         userAdapter.onClickDelete = {
             viewModel.deleteUser(it)
+//            viewModel.deleteUserAuth(it.email)
         }
         lifecycleScope.launchWhenStarted {
             viewModel.delUser.collect {

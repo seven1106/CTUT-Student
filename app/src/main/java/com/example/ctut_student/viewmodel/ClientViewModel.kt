@@ -43,8 +43,8 @@ class  ClientViewModel @Inject constructor(
     private val _courses = MutableStateFlow<Resource<List<Course>>>(Resource.Unspecified())
     val courses: StateFlow<Resource<List<Course>>> = _courses
 
-    private val _fnoti = MutableStateFlow<Resource<List<com.example.ctut_student.data.Notification>>>(Resource.Unspecified())
-    val fnoti: StateFlow<Resource<List<com.example.ctut_student.data.Notification>>> = _fnoti
+    private val _fnoti = MutableStateFlow<Resource<List<Notification>>>(Resource.Unspecified())
+    val fnoti: StateFlow<Resource<List<Notification>>> = _fnoti
 
     private val _updateInfo = MutableStateFlow<Resource<User>>(Resource.Unspecified())
     val updateInfo = _updateInfo.asStateFlow()
@@ -128,7 +128,7 @@ class  ClientViewModel @Inject constructor(
             _fnoti.emit(Resource.Loading())
         }
         firestore.collection("noti").whereEqualTo("classId", user.value.data?.classId)
-            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener {
                 val notifications = it.toObjects(Notification::class.java)
@@ -143,6 +143,7 @@ class  ClientViewModel @Inject constructor(
                     _fnoti.emit(Resource.Error(it.message.toString()))
                 }
             }
+
     }
 
     fun updateUser(user: User, imageUri: Uri?) {
