@@ -1,11 +1,11 @@
 package com.example.ctut_student.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -45,29 +45,24 @@ class ManageActivity : AppCompatActivity() {
             onPause()
             showBtnAddDialog()
         }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.g_blue)
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchAllUsers()
-    }
-
 
     private fun showBtnAddDialog() {
         val dialogAddView = layoutInflater.inflate(R.layout.btn_add_dialog, null)
         dialog = BottomSheetDialog(this, R.style.BottomSheetTheme)
         dialog.setContentView(dialogAddView)
-        btnAddStudent = dialogAddView.findViewById<LinearLayout>(R.id.btnAddStudent)
+        btnAddStudent = dialogAddView.findViewById(R.id.btnAddStudent)
         btnAddStudent.setOnClickListener {
             dialog.dismiss()
             showAddStudentDialog()
         }
-        btnAddClassroom = dialogAddView.findViewById<LinearLayout>(R.id.btnAddClassroom)
+        btnAddClassroom = dialogAddView.findViewById(R.id.btnAddClassroom)
         btnAddClassroom.setOnClickListener {
             dialog.dismiss()
             showAddClassroomDialog()
         }
-        btnAddCouseL = dialogAddView.findViewById<LinearLayout>(R.id.btnAddCourse)
+        btnAddCouseL = dialogAddView.findViewById(R.id.btnAddCourse)
         btnAddCouseL.setOnClickListener {
             dialog.dismiss()
             showAddCourseDialog()
@@ -122,7 +117,6 @@ class ManageActivity : AppCompatActivity() {
                             is Resource.Error -> {
 
                                 binding.btnAddCourse.revertAnimation()
-                                Log.e("TAGGGG", it.message.toString())
                             }
 
                             else -> Unit
@@ -187,7 +181,6 @@ class ManageActivity : AppCompatActivity() {
                             is Resource.Error -> {
 
                                 binding.btnCreateNewClassroom.revertAnimation()
-                                Log.e("TAGGGG", it.message.toString())
                             }
 
                             else -> Unit
@@ -208,8 +201,8 @@ class ManageActivity : AppCompatActivity() {
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         binding.apply {
             btnSaveEditStudent.setOnClickListener() {
-                    var gender: String = ""
-                    val selectedGenderId = genderRadioGroup.checkedRadioButtonId
+                    val gender: String
+                val selectedGenderId = genderRadioGroup.checkedRadioButtonId
                     gender = if (selectedGenderId == R.id.maleRadioButton) {
                         "male"
                     } else {
@@ -258,6 +251,8 @@ class ManageActivity : AppCompatActivity() {
                                         edAcaYear.text.clear()
                                     }
                                     binding.btnSaveEditStudent.revertAnimation()
+                                    val navController = findNavController(R.id.ManageHostFragment)
+                                    navController.navigate(R.id.userManageFragment)
                                 }
 
                                 is Resource.Error -> {

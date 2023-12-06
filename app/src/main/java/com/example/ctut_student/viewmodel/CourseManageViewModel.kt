@@ -134,7 +134,7 @@ class CourseManageViewModel @Inject constructor(
             _fnoti.emit(Resource.Loading())
         }
         firestore.collection("noti").whereEqualTo("classId", classId)
-            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .whereEqualTo("courseName", courseName).get()
 
             .addOnSuccessListener {
@@ -186,12 +186,10 @@ class CourseManageViewModel @Inject constructor(
                 val lesson = it.toObjects(Lesson::class.java)
                 viewModelScope.launch {
                     _flesson.emit(Resource.Success(lesson))
-                    Log.i("TAGnoti", lesson.toString())
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _flesson.emit(Resource.Error(it.message.toString()))
-                    Log.i("TAGnotif", it.message.toString())
 
                 }
             }
@@ -301,6 +299,28 @@ class CourseManageViewModel @Inject constructor(
         viewModelScope.launch {
             _delcourse.emit(Resource.Loading())
         }
+        firestore.collection("lesson")
+            .whereEqualTo("courseName", course.courseName)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                }
+            }
+        firestore.collection("noti")
+            .whereEqualTo("courseName", course.courseName)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                }
+            }
+        val storageRef = storage.child("course/${course.courseName}")
+        storageRef.listAll().addOnSuccessListener {
+            it.items.forEach { item ->
+                item.delete()
+            }
+        }
         firestore.collection("course")
             .whereEqualTo("courseName", course.courseName)
             .get()
@@ -309,6 +329,7 @@ class CourseManageViewModel @Inject constructor(
                     document.reference.delete()
                 }
                 viewModelScope.launch {
+
                     _delcourse.emit(Resource.Success((course)))
                     Toast.makeText(getApplication(), "Success", Toast.LENGTH_SHORT)
                         .show()

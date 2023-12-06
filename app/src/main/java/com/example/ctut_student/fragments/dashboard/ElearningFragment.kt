@@ -13,12 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ctut_student.R
-import com.example.ctut_student.adapters.CourseAdapter
-import com.example.ctut_student.databinding.FragmentCourseManageBinding
+import com.example.ctut_student.adapters.client.CourseAdapter
 import com.example.ctut_student.databinding.FragmentElearningBinding
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClientViewModel
-import com.example.ctut_student.viewmodel.CourseManageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
@@ -73,7 +71,7 @@ class ElearningFragment:Fragment(R.layout.fragment_elearning){
         }
         courseAdapter.onClick = {
             val b = Bundle().apply { putParcelable("course", it) }
-            findNavController().navigate(R.id.action_elearningFragment_to_courseDetailFragment, b)
+            findNavController().navigate(R.id.action_elearningFragment_to_courseDetailFragmentClient, b)
 
         }
     }

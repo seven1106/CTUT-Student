@@ -53,8 +53,8 @@ class  ClientViewModel @Inject constructor(
     val resetPassword = _resetPassword.asSharedFlow()
     init {
         getUser()
-        fetchCourse()
         fetchAllNoti()
+        fetchCourse()
     }
     private fun getUser() {
         viewModelScope.launch {
@@ -111,13 +111,11 @@ class  ClientViewModel @Inject constructor(
             .get()
             .addOnSuccessListener {
                 val course = it.toObjects(Course::class.java)
-                Log.i("TAGfetch", it.toString())
                 viewModelScope.launch {
                     _courses.emit(Resource.Success(course))
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
-                    Log.i("TAGfetch", it.message.toString())
                     _courses.emit(Resource.Error(it.message.toString()))
                 }
             }

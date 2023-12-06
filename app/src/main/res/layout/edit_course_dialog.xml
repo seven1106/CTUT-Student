@@ -86,17 +86,35 @@
             app:layout_constraintStart_toEndOf="@+id/edTTheory"
             app:layout_constraintTop_toBottomOf="@+id/edLEmail" />
 
+
         <EditText
             android:id="@+id/edCourseId"
             android:layout_width="0dp"
-            android:textColor="@android:color/black"
             android:layout_height="45dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
             android:hint="@string/classId"
             android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+             
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/edCourseName" />
+
+        <EditText
+            android:id="@+id/edCourseName"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/white_background"
+            android:editable="false"
+            android:gravity="center"
+            android:hint="@string/course_name"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintHorizontal_bias="0.0"
@@ -104,36 +122,21 @@
             app:layout_constraintTop_toBottomOf="@+id/imageUser" />
 
         <EditText
-            android:id="@+id/edCourseName"
-            android:layout_width="0dp"
-            android:textColor="@android:color/black"
-            android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/white_background"
-            android:fontFamily="@font/poppins_light"
-            android:gravity="center"
-            android:hint="@string/course_name"
-            android:singleLine="true"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edCourseId" />
-        <EditText
             android:id="@+id/edLecName"
-            android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:textStyle="bold"
             android:layout_marginTop="16dp"
             android:background="@drawable/white_background"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
             android:hint="@string/lecturer_name"
             android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+             
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edCourseName" />
-
+            app:layout_constraintTop_toBottomOf="@+id/edCourseId" />
 
         <EditText
             android:id="@+id/edDepartment"
@@ -148,7 +151,7 @@
             android:singleLine="true"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintHorizontal_bias="1.0"
+             
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edLecName" />
 
@@ -166,7 +169,7 @@
             android:singleLine="true"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintHorizontal_bias="1.0"
+             
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edDepartment" />
 
@@ -184,7 +187,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintHorizontal_bias="1.0"
+             
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/edTTheory"
             app:layout_constraintVertical_bias="1.0" />

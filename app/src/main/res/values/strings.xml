@@ -68,4 +68,11 @@
     <string name="change_password">Change password</string>
     <string name="id">Student ID</string>
     <string name="searchby">Search by name or id</string>
+    <string name="full_name">Full name:</string>
+    <string name="email1">Email:</string>
+    <string name="class_id">Class Id:</string>
+    <string name="student_id">Student ID:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="address1">Address:</string>
+    <string name="phone">Phone:</string>
 </resources>

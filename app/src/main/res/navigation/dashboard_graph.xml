@@ -26,8 +26,8 @@
         tools:layout="@layout/fragment_elearning">
 
         <action
-            android:id="@+id/action_elearningFragment_to_courseDetailFragment"
-            app:destination="@id/courseDetailFragment" />
+            android:id="@+id/action_elearningFragment_to_courseDetailFragmentClient"
+            app:destination="@id/courseDetailFragmentClient" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -39,10 +39,10 @@
             app:destination="@id/studentAccountFragment" />
     </fragment>
     <fragment
-        android:id="@+id/courseDetailFragment"
-        android:name="com.example.ctut_student.fragments.management.CourseDetailFragment"
-        android:label="CourseDetailFragment"
-        tools:layout="@layout/fragment_classroom_detail"
+        android:id="@+id/courseDetailFragmentClient"
+        android:name="com.example.ctut_student.fragments.dashboard.CourseDetailFragmentClient"
+        android:label="courseDetailFragmentClient"
+        tools:layout="@layout/fragment_course_detail_client"
         >
         <argument
             android:name="course"

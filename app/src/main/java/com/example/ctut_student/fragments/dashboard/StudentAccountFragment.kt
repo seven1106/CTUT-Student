@@ -1,7 +1,7 @@
 package com.example.ctut_student.fragments.dashboard
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -24,6 +24,7 @@ import com.example.ctut_student.databinding.FragmentHomeBinding
 import com.example.ctut_student.dialog.setupBottomSheetDialog
 import com.example.ctut_student.util.Resource
 import com.example.ctut_student.viewmodel.ClientViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -110,18 +111,45 @@ class StudentAccountFragment : Fragment() {
                 viewModel.resetPassword(email)
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.resetPassword.collect {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+
+                    is Resource.Success -> {
+                        Snackbar.make(
+                            requireView(), "Reset link was sent to your email", Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    is Resource.Error -> {
+                        Snackbar.make(requireView(), "Error: ${it.message}", Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> Unit
+
+                }
+            }
+        }
 
         binding.btnEditStudent.setOnClickListener {
             binding.apply {
                 val user = User(
-                    edFirstName.text.toString().trim(),
-                    edLastName.text.toString().trim(),
-                    email = edEmail.text.toString().trim(),
-                    role = "student",
+                    firstName = viewModel.user.value.data?.firstName!!,
+                    lastName = viewModel.user.value.data?.lastName!!,
+                    email = viewModel.user.value.data?.email!!,
+                    role = viewModel.user.value.data?.role!!,
                     address = edAddress.text.toString().trim(),
                     phoneNumber = edPhone.text.toString().trim(),
-                    dayOfBirth = edDoB.text.toString().trim(),
-                    specialty = edSpecialty.text.toString().trim(),
+                    dayOfBirth = viewModel.user.value.data?.dayOfBirth!!,
+                    specialty = viewModel.user.value.data?.specialty!!,
+                    id = viewModel.user.value.data?.id!!,
+                    userId = viewModel.user.value.data?.userId!!,
+                    classId = viewModel.user.value.data?.classId!!,
+                    acdermicYear = viewModel.user.value.data?.acdermicYear!!,
+                    gender = viewModel.user.value.data!!.gender
                 )
                 viewModel.updateUser(user, imageUri)
             }
@@ -135,21 +163,20 @@ class StudentAccountFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showUserInformation(data: User) {
         binding.apply {
             if (data.imagePath !== "") {
                 Glide.with(this@StudentAccountFragment).load(data.imagePath).into(ivUser)
             }else{
             }
-            edFirstName.setText(data.firstName)
-            edLastName.setText(data.lastName)
+            edFirstName.setText(data.lastName + " " + data.firstName)
             edEmail.setText(data.email)
             edAddress.setText(data.address)
             edPhone.setText(data.phoneNumber)
             edDoB.setText(data.dayOfBirth)
-            edSpecialty.setText(data.specialty)
+            edSpecialty.setText(data.userId)
             edClassId.setText(data.classId)
-
 
         }
     }
@@ -160,7 +187,6 @@ class StudentAccountFragment : Fragment() {
             imageUser.visibility = View.VISIBLE
             imageEdit.visibility = View.VISIBLE
             edFirstName.visibility = View.VISIBLE
-            edLastName.visibility = View.VISIBLE
             edEmail.visibility = View.VISIBLE
             btnEditStudent.visibility = View.VISIBLE
         }
@@ -172,7 +198,6 @@ class StudentAccountFragment : Fragment() {
             imageUser.visibility = View.INVISIBLE
             imageEdit.visibility = View.INVISIBLE
             edFirstName.visibility = View.INVISIBLE
-            edLastName.visibility = View.INVISIBLE
             edEmail.visibility = View.INVISIBLE
             btnEditStudent.visibility = View.INVISIBLE
         }

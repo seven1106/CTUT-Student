@@ -1,4 +1,4 @@
-package com.example.ctut_student.adapters
+package com.example.ctut_student.adapters.client
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -20,6 +20,7 @@ class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
                 tvCourseName.text = course.courseName
                 tvAdvisor.text = course.lecturer
                 tvDepartment.text = course.classId
+                ibDeleteUser.visibility = View.GONE
             }
 
         }

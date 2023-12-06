@@ -1,4 +1,5 @@
-package com.example.ctut_student.adapters
+package com.example.ctut_student.adapters.client
+
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -16,14 +17,15 @@ import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.NotiRvItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class AllNotiAdapter: RecyclerView.Adapter<AllNotiAdapter.NotiViewHolder>() {
+class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
     inner class NotiViewHolder(private val binding: NotiRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(noti: Notification) {
             binding.apply {
-                tvName.text = noti.courseName
                 tvTitle.text = noti.title
                 tvBody.text = noti.body
-                binding.ibDeleteUser.visibility = View.INVISIBLE
+                tvName.visibility = View.GONE
+                ibDeleteUser.visibility = View.GONE
+
             }
 
         }
@@ -52,6 +54,10 @@ class AllNotiAdapter: RecyclerView.Adapter<AllNotiAdapter.NotiViewHolder>() {
         holder.itemView.setOnClickListener {
             onClick?.invoke(noti)
         }
+        holder.itemView.findViewById<ImageView>(R.id.ibDeleteUser).setOnClickListener {
+            onClickDelete?.invoke(noti)
+        }
+
     }
 
     override fun getItemCount(): Int {

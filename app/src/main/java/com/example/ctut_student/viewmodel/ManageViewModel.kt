@@ -19,7 +19,6 @@ import com.example.ctut_student.util.validateEmail
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -73,7 +71,7 @@ class  ManageViewModel @Inject constructor(
         viewModelScope.launch {
             _user.emit(Resource.Loading())
         }
-        firestore.collection("user").document(auth.uid!!)
+        firestore.collection("user").document(auth.currentUser?.uid!!)
 
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -124,8 +122,9 @@ class  ManageViewModel @Inject constructor(
             }
             return
         }
-            runBlocking {
+            viewModelScope.launch {
                 _register.emit(Resource.Loading())
+                _users.emit(Resource.Loading())
             }
             auth.createUserWithEmailAndPassword(user.email, password)
                 .addOnSuccessListener { it ->
@@ -147,7 +146,6 @@ class  ManageViewModel @Inject constructor(
             .set(user)
             .addOnSuccessListener {
                 _register.value = Resource.Success(user)
-                _users.value = Resource.Success(listOf(user))
             }.addOnFailureListener {
                 _register.value = Resource.Error(it.message.toString())
             }
@@ -236,15 +234,6 @@ class  ManageViewModel @Inject constructor(
                     _delUser.emit(Resource.Error(it.message.toString()))
                 }
             }
-    }
-
-    fun deleteUserAuth(user: FirebaseUser) {
-        user.delete().addOnSuccessListener {
-            Toast.makeText(getApplication(), "Delete User Success", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(getApplication(), it.message.toString(), Toast.LENGTH_SHORT).show()
-        }
-
     }
 
     fun updateUser(user: User, imageUri: Uri?) {

@@ -3,11 +3,9 @@ package com.example.ctut_student.fragments.management
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,13 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.ctut_student.R
 import com.example.ctut_student.adapters.LessonAdapter
 import com.example.ctut_student.adapters.NotiAdapter
 import com.example.ctut_student.data.Lesson
 import com.example.ctut_student.data.Notification
-import com.example.ctut_student.data.User
 import com.example.ctut_student.databinding.AddLessonDialogBinding
 import com.example.ctut_student.databinding.AddNotiDialogBinding
 import com.example.ctut_student.databinding.EditCourseDialogBinding
@@ -96,25 +94,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
             viewModel.downloadPdf(it, requireContext())
         }
         binding.apply {
-            firestore.collection("user").document(auth.uid!!)
-                .addSnapshotListener { value, error ->
-                    if (error != null) {
-                        Log.w("TAG", "Listen failed.", error)
-                        return@addSnapshotListener
-                    } else {
-                        val user = value?.toObject(User::class.java)
-                        user?.let {
-                            val userRole =
-                                user.role
-                            if (userRole == "student") {
-                                llAddNoti.visibility = View.GONE
-                                btnEditCourseInfo.visibility = View.GONE
-                            } else {
-
-                            }
-                        }
-                    }
-                }
             btnRefresh.setOnClickListener {
                 viewModel.fetchNoti(course.classId, course.courseName)
             }
@@ -143,12 +122,6 @@ class CourseDetailFragment : Fragment(R.layout.fragment_classroom_detail) {
             }
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-notiAdapter.startListening()
-        lessonAdapter.startListening()
-    }
     private fun showEditCourseInfoDialog() {
         val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
         val binding = EditCourseDialogBinding.inflate(layoutInflater)
@@ -176,12 +149,34 @@ notiAdapter.startListening()
                 viewModel.editCourseInfo(course)
                 dialog.dismiss()
             }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.updateInfo.collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.btneditCourse.startAnimation()
+                    }
+
+                    is Resource.Success -> {
+                        binding.btneditCourse.revertAnimation()
+                        findNavController().navigateUp()
+
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> Unit
+                }
             }
+        }
         dialog.show()
     }
 
+
     private fun setUpLessonRv() {
-         lessonAdapter = LessonAdapter()
+        lessonAdapter = LessonAdapter()
         binding.rvLesson.apply {
             adapter = lessonAdapter
             layoutManager =
@@ -216,7 +211,7 @@ notiAdapter.startListening()
     }
 
     private fun setUpNotiRv() {
-         notiAdapter = NotiAdapter()
+        notiAdapter = NotiAdapter()
         binding.rvNoti.apply {
             adapter = notiAdapter
             layoutManager =
@@ -256,13 +251,13 @@ notiAdapter.startListening()
         dialog.setContentView(view)
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         binding.apply {
-            btnAddDoc.setOnClickListener{
+            btnAddDoc.setOnClickListener {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.type = "application/pdf"
                 pdfActivityResultLauncher.launch(intent)
 
             }
-            btnAddLesson.setOnClickListener{
+            btnAddLesson.setOnClickListener {
                 val lesson = Lesson(
                     edTitle.text.toString(),
                     args.course.classId,
@@ -278,13 +273,9 @@ notiAdapter.startListening()
                         }
 
                         is Resource.Success -> {
-                            binding.apply {
-                                edTitle.text.clear()
-                            }
                             binding.btnAddLesson.revertAnimation()
-
                             viewModel.fetchLesson(args.course.classId, args.course.courseName)
-
+                            dialog.dismiss()
                         }
 
                         is Resource.Error -> {

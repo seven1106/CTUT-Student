@@ -1,4 +1,4 @@
-package com.example.ctut_student.adapters
+package com.example.ctut_student.adapters.client
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -23,6 +23,7 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
             binding.apply {
                 tvTitle.text = lesson.lessonName
                 tvBody.text = "Download PDF"
+                ibDeleteUser.visibility = View.GONE
             }
         }
     }

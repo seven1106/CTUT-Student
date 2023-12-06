@@ -62,7 +62,7 @@
         android:id="@+id/courseDetailFragment"
         android:name="com.example.ctut_student.fragments.management.CourseDetailFragment"
         android:label="CourseDetailFragment"
-        tools:layout="@layout/fragment_classroom_detail"
+        tools:layout="@layout/fragment_course_detail"
         >
         <argument
             android:name="course"

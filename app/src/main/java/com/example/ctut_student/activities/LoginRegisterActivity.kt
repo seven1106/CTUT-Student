@@ -1,6 +1,5 @@
 package com.example.ctut_student.activities
 
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.ctut_student.R

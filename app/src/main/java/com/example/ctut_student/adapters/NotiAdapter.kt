@@ -18,33 +18,12 @@ import com.example.ctut_student.databinding.NotiRvItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-
     inner class NotiViewHolder(private val binding: NotiRvItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(noti: Notification) {
             binding.apply {
                 tvTitle.text = noti.title
                 tvBody.text = noti.body
                 tvName.visibility = View.GONE
-                firestore.collection("user").document(auth.uid!!)
-                    .addSnapshotListener { value, error ->
-                        if (error != null) {
-                            Log.w("TAG", "Listen failed.", error)
-                            return@addSnapshotListener
-                        } else {
-                            val user = value?.toObject(User::class.java)
-                            user?.let {
-                                val userRole =
-                                    user.role
-                                if (userRole == "admin") {
-
-                                } else {
-                                    binding.ibDeleteUser.visibility = View.INVISIBLE
-                                }
-                            }
-                        }
-                    }
             }
 
         }
@@ -81,11 +60,6 @@ class NotiAdapter: RecyclerView.Adapter<NotiAdapter.NotiViewHolder>() {
 
     override fun getItemCount(): Int {
         return differ.currentList.size
-    }
-
-    fun startListening() {
-        notifyDataSetChanged()
-
     }
 
     var onClick: ((Notification) -> Unit)? = null

@@ -121,6 +121,7 @@ class UserManageFragment : Fragment(R.layout.fragment_user_manage) {
             editStudentBottomSheetDialog(data)
         }
         userAdapter.onClickDelete = {
+
             viewModel.deleteUser(it)
 //            viewModel.deleteUserAuth(it.email)
         }
